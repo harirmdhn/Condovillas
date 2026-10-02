@@ -224,7 +224,20 @@ img { display: block; max-width: 100%; }
   aspect-ratio: 1; border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; background: var(--surface);
 }
-.location__frame { width: 100%; height: 100%; border: 0; display: block; filter: saturate(0.92); }
+.location__frame { position: relative; z-index: 1; width: 100%; height: 100%; border: 0; display: block; filter: saturate(0.92); }
+/* Fallback link behind the iframe — visible only if the embed fails to render */
+.location__fallback {
+  position: absolute; inset: 0; z-index: 0; display: grid; place-items: center;
+  text-align: center; padding: 1.5rem;
+  color: var(--primary); font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 0.08em;
+  background:
+    radial-gradient(circle at 60% 40%, oklch(0.72 0.15 20 / 0.12), transparent 60%),
+    repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 48px),
+    var(--surface);
+}
+.location__fallback:hover span { text-decoration: underline; }
 .location__maplink {
   position: absolute; right: 1rem; top: 1rem; z-index: 2;
   display: inline-flex; align-items: center; gap: 0.35rem;

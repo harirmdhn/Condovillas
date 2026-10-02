@@ -154,13 +154,18 @@
       </ul>
     </div>
     <div class="location__map reveal">
+      <!-- Fallback shown if the embed is blocked (ad-blockers, etc.) -->
+      <a class="location__fallback"
+         href="https://www.google.com/maps/@-6.2652871,106.6401961,19.29z"
+         target="_blank" rel="noopener noreferrer">
+        <span>Open the map on Google Maps ↗</span>
+      </a>
       <iframe
         class="location__frame"
         title="Map showing the location of CondoVilla"
-        src="https://maps.google.com/maps?q=-6.2652871,106.6401961&z=18&output=embed"
-        loading="lazy"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=106.6362%2C-6.2693%2C106.6442%2C-6.2613&layer=mapnik&marker=-6.2652871%2C106.6401961"
         referrerpolicy="no-referrer-when-downgrade"
-        allowfullscreen></iframe>
+        allow="fullscreen"></iframe>
       <a
         class="location__maplink"
         href="https://www.google.com/maps/@-6.2652871,106.6401961,19.29z"
