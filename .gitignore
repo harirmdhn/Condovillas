@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Build / tooling artifacts
+.kiro/artifacts/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
