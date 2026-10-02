@@ -125,18 +125,30 @@ img { display: block; max-width: 100%; }
   color: oklch(0.99 0.005 60);
   background: linear-gradient(120deg, oklch(0.78 0.13 30), oklch(0.72 0.1 350) 45%, oklch(0.5 0.08 230));
 }
+/* ------------------------------------------------------------
+   PINNED HERO (bintarojaya.id-style)
+   The image is FIXED to the viewport, so it stays perfectly still
+   while the sections below scroll UP over it like a rising sheet.
+   A slow CSS "breathing" zoom keeps it feeling alive.
+   ------------------------------------------------------------ */
 .hero__bg {
-  position: absolute; top: -8%; left: -4%; right: -4%;
-  width: 108%;
-  height: 140%;              /* extra size gives room to travel + zoom */
+  position: fixed;                 /* <- key: pinned to the viewport */
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   z-index: 0;
   background: url("../kv/hero.jpg") right center / cover no-repeat;
-  background-size: 168% auto;
-  transform-origin: 70% 50%; /* zoom focus sits over the residences */
+  background-size: cover;
+  transform-origin: 70% 50%;       /* zoom focus sits over the residences */
   will-change: transform;
+  animation: heroBreathe 18s ease-in-out infinite alternate;
+}
+/* Slow, gentle zoom so the pinned image never feels static */
+@keyframes heroBreathe {
+  from { transform: scale(1.06); }
+  to   { transform: scale(1.14); }
 }
 .hero__scrim {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background: linear-gradient(90deg,
     oklch(0.22 0.04 var(--brand-hue) / 0.62) 0%,
     oklch(0.22 0.04 var(--brand-hue) / 0.22) 42%,
