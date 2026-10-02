@@ -126,11 +126,13 @@ img { display: block; max-width: 100%; }
   background: linear-gradient(120deg, oklch(0.78 0.13 30), oklch(0.72 0.1 350) 45%, oklch(0.5 0.08 230));
 }
 .hero__bg {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 130%;              /* extra height gives room to travel */
+  position: absolute; top: -8%; left: -4%; right: -4%;
+  width: 108%;
+  height: 140%;              /* extra size gives room to travel + zoom */
   z-index: 0;
   background: url("../kv/hero.jpg") right center / cover no-repeat;
   background-size: 168% auto;
+  transform-origin: 70% 50%; /* zoom focus sits over the residences */
   will-change: transform;
 }
 .hero__scrim {

@@ -56,6 +56,9 @@
   ).map((el) => ({
     el,
     speed: parseFloat(el.getAttribute("data-parallax")) || 0,
+    // data-zoom="startScale" -> element scales from startScale (zoomed in)
+    // down to 1 (zoomed out) as it scrolls out through the top of the view.
+    zoom: parseFloat(el.getAttribute("data-zoom")) || 0,
   }));
 
   // Disable parallax for reduced-motion or very narrow screens (perf/feel).
@@ -68,14 +71,31 @@
   function update() {
     const viewH = vh();
     for (let i = 0; i < parallaxEls.length; i++) {
-      const { el, speed } = parallaxEls[i];
+      const { el, speed, zoom } = parallaxEls[i];
       const rect = el.getBoundingClientRect();
       // Skip elements far outside the viewport
       if (rect.bottom < -viewH || rect.top > viewH * 2) continue;
-      // Distance of the element's centre from the viewport centre
+
+      // --- vertical parallax drift ---
       const centre = rect.top + rect.height / 2 - viewH / 2;
       const shift = -(centre * speed);
-      el.style.transform = "translate3d(0," + shift.toFixed(2) + "px,0)";
+
+      let transform = "translate3d(0," + shift.toFixed(2) + "px,0)";
+
+      // --- scroll-driven zoom (zoom in at top, zoom out as you scroll) ---
+      if (zoom > 1) {
+        // progress 0 at hero top-of-page, 1 when the section's host has
+        // scrolled up by one viewport. Clamp to [0,1].
+        const host = el.parentElement || el;
+        const scrolled = -host.getBoundingClientRect().top;
+        const span = host.offsetHeight || viewH;
+        let p = scrolled / span;
+        p = p < 0 ? 0 : p > 1 ? 1 : p;
+        const scale = zoom + (1 - zoom) * p; // zoom -> 1
+        transform += " scale(" + scale.toFixed(4) + ")";
+      }
+
+      el.style.transform = transform;
     }
     ticking = false;
   }
