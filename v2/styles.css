@@ -199,10 +199,8 @@ img { display: block; max-width: 100%; }
 }
 .banner__bg {
   position: absolute; top: 0; left: 0; right: 0; height: 150%; z-index: 0;
-  /* Anchor right + zoom so the baked-in "Voilà" text (left of the KV)
-     stays out of frame, matching the hero treatment. */
-  background: url("../kv/hero.jpg") right center / cover no-repeat;
-  background-size: 175% auto;
+  /* Dedicated banner key visual, centered and cover-filled. */
+  background: url("../kv/testing-banner-web.jpeg") center center / cover no-repeat;
   will-change: transform;
 }
 .banner__scrim {
