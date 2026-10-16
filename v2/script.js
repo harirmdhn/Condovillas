@@ -61,9 +61,22 @@
     zoom: parseFloat(el.getAttribute("data-zoom")) || 0,
   }));
 
+  /* ---------- Sliding panes (the "window opening") ----------
+     Elements with data-slide="<percent>" translate on the X axis from 0 up
+     to <percent>% of their own width, driven by how far the hero section has
+     scrolled through one viewport. Negative opens left, positive opens right. */
+  const slideEls = Array.prototype.slice.call(
+    document.querySelectorAll("[data-slide]")
+  ).map((el) => ({
+    el,
+    amount: parseFloat(el.getAttribute("data-slide")) || 0,
+  }));
+  const hero = document.getElementById("hero");
+
   // Disable parallax for reduced-motion or very narrow screens (perf/feel).
   const smallScreen = window.matchMedia("(max-width: 640px)").matches;
-  const parallaxOn = !reduce && !smallScreen && parallaxEls.length > 0;
+  const parallaxOn =
+    !reduce && !smallScreen && (parallaxEls.length > 0 || slideEls.length > 0);
 
   let ticking = false;
   const vh = () => window.innerHeight || document.documentElement.clientHeight;
@@ -97,6 +110,19 @@
 
       el.style.transform = transform;
     }
+
+    // --- sliding panes: open the window as the hero scrolls past ---
+    if (slideEls.length && hero) {
+      const scrolled = -hero.getBoundingClientRect().top;
+      const span = hero.offsetHeight || viewH;
+      let p = scrolled / span;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      for (let j = 0; j < slideEls.length; j++) {
+        const { el, amount } = slideEls[j];
+        el.style.transform = "translate3d(" + (amount * p).toFixed(2) + "%,0,0)";
+      }
+    }
+
     ticking = false;
   }
 

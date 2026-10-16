@@ -30,9 +30,29 @@
     </button>
   </header>
 
-  <!-- ============ HERO (parallax) ============ -->
+  <!-- ============ HERO (parallax: window opening onto the lake) ============ -->
+  <!--
+    Depth layers, back to front:
+      1. .hero__lake   — the view beyond: lake + CondoVilla. Zooms OUT on
+                         scroll to "reveal" the vista. Drop the real photo in
+                         styles.css at .hero__lake (../kv/lake-villa.jpg).
+      2. .hero__window — foreground: bedroom interior + window frame. The two
+                         panes (.hero__pane--l / --r) slide apart on scroll to
+                         "open the window". Real art: an interior/frame PNG with
+                         transparency where the glass is (../kv/window-frame.png).
+      3. .hero__inner  — the headline block, eases opposite for depth.
+  -->
   <section class="hero" id="hero">
-    <div class="hero__bg" data-parallax="0.4" data-zoom="1.4" aria-hidden="true"></div>
+    <!-- The view beyond the window -->
+    <div class="hero__lake" data-parallax="0.4" data-zoom="1.35" aria-hidden="true"></div>
+
+    <!-- Foreground: window frame + sliding glass panes (the "opening") -->
+    <div class="hero__window" data-parallax="-0.06" aria-hidden="true">
+      <div class="hero__pane hero__pane--l" data-slide="-100"></div>
+      <div class="hero__pane hero__pane--r" data-slide="100"></div>
+      <div class="hero__mullion"></div>
+    </div>
+
     <div class="hero__scrim" aria-hidden="true"></div>
     <div class="hero__inner" data-parallax="-0.12">
       <p class="eyebrow reveal">Lakeside · Est. 2026</p>
