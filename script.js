@@ -207,4 +207,30 @@
       });
     });
   });
+
+  /* ============================================================
+     Enquire form: front-end only. On a valid submit, show a thank-you
+     message and reset the fields. No data is sent anywhere.
+     ============================================================ */
+  const enquireForm = document.querySelector(".enquire__form");
+  const enquireThanks = document.querySelector(".enquire__thanks");
+  if (enquireForm) {
+    enquireForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Let the browser enforce required fields + email format first.
+      if (!enquireForm.checkValidity()) {
+        enquireForm.reportValidity();
+        return;
+      }
+      const name = (enquireForm.querySelector('input[type="text"]') || {}).value || "";
+      const first = name.trim().split(/\s+/)[0];
+      if (enquireThanks) {
+        enquireThanks.textContent = first
+          ? "Thank you, " + first + " — we'll be in touch shortly to confirm your appointment."
+          : "Thank you — we'll be in touch shortly to confirm your appointment.";
+        enquireThanks.hidden = false;
+      }
+      enquireForm.reset();
+    });
+  }
 })();

@@ -421,6 +421,12 @@ img { display: block; max-width: 100%; }
 }
 .enquire__form input::placeholder { color: var(--fg-muted); }
 .enquire__form input:focus { outline: none; border-color: var(--primary); }
+.enquire__thanks {
+  margin-top: 1.5rem; padding: 0.9rem 1.25rem;
+  background: oklch(0.42 0.09 var(--brand-hue) / 0.1);
+  border: 1px solid var(--primary); border-radius: var(--radius);
+  color: var(--primary-deep); font-size: 0.95rem;
+}
 .enquire__fine { font-size: 0.75rem; color: var(--fg-muted); margin-top: 1.5rem; }
 
 /* ---------- footer ---------- */
