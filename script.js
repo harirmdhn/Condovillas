@@ -80,14 +80,10 @@
      ============================================================ */
   const stage = document.getElementById("hero-stage");
   const lake = document.querySelector(".hero__lake");
-  const mullion = document.getElementById("hero-mullion");
   const scrollHint = document.getElementById("hero-scroll");
-  const panes = Array.prototype.slice
-    .call(document.querySelectorAll(".hero [data-slide]"))
-    .map((el) => ({ el, amount: parseFloat(el.getAttribute("data-slide")) || 0 }));
   const zoomStart = lake ? parseFloat(lake.getAttribute("data-zoom")) || 1 : 1;
 
-  // Fraction of the track over which the window opens; it holds the rest.
+  // Fraction of the track over which the zoom-out completes; it holds the rest.
   const OPEN_AT = 0.6;
 
   const smallScreen = window.matchMedia("(max-width: 640px)").matches;
@@ -111,17 +107,12 @@
       let raw = -rect.top / travel;
       raw = raw < 0 ? 0 : raw > 1 ? 1 : raw;
 
-      const p = easeOutCubic(Math.min(raw / OPEN_AT, 1)); // open progress 0..1
+      const p = easeOutCubic(Math.min(raw / OPEN_AT, 1)); // zoom progress 0..1
 
       if (lake) {
         const scale = zoomStart + (1 - zoomStart) * p;
         lake.style.transform = "translate3d(0,0,0) scale(" + scale.toFixed(4) + ")";
       }
-      for (let i = 0; i < panes.length; i++) {
-        panes[i].el.style.transform =
-          "translate3d(" + (panes[i].amount * p).toFixed(2) + "%,0,0)";
-      }
-      if (mullion) mullion.style.opacity = (1 - p).toFixed(3);
       if (scrollHint) scrollHint.style.opacity = p > 0.15 ? "0" : "1";
 
       ticking = false;

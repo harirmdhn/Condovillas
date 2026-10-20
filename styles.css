@@ -179,35 +179,7 @@ img { display: block; max-width: 100%; }
   }
 }
 
-/* --- Layer 2: frosted-glass panes that slide apart (the "opening") --- */
-.hero__window { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-.hero__pane {
-  position: absolute; top: 0; bottom: 0; width: 50%; will-change: transform;
-  background: linear-gradient(115deg, rgba(255,255,255,.28), rgba(255,255,255,.08) 40%, rgba(210,220,225,.16) 100%);
-  backdrop-filter: blur(1px);
-  border: 1px solid rgba(255,255,255,.35);
-}
-.hero__pane--l { left: 0;  border-right: none; box-shadow: inset -20px 0 40px -20px rgba(0,0,0,.25); }
-.hero__pane--r { right: 0; border-left: none;  box-shadow: inset 20px 0 40px -20px rgba(0,0,0,.25); }
-.hero__pane::before {
-  content: ""; position: absolute; top: -20%; left: 30%; width: 30%; height: 140%;
-  background: linear-gradient(105deg, transparent, rgba(255,255,255,.35) 50%, transparent);
-  transform: skewX(-12deg);
-}
-
-/* --- window frame + centre mullion (the mullion fades out as it opens) --- */
-.hero__frame {
-  position: absolute; inset: 6vh var(--gutter); z-index: 2; pointer-events: none;
-  border: 14px solid #2a2017; border-radius: var(--radius);
-  box-shadow: 0 0 0 2px rgba(0,0,0,.25), inset 0 0 60px rgba(0,0,0,.45);
-}
-.hero__mullion {
-  position: absolute; top: 6vh; bottom: 6vh; left: 50%; width: 14px;
-  transform: translateX(-50%); z-index: 2; pointer-events: none; will-change: opacity;
-  background: #2a2017; box-shadow: 0 0 0 2px rgba(0,0,0,.25);
-}
-
-/* Left-side scrim for headline legibility (sits above the art, below text). */
+/* Left-side scrim for headline legibility (sits above the video, below text). */
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: linear-gradient(90deg,
@@ -459,26 +431,20 @@ img { display: block; max-width: 100%; }
   * { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
-  /* No pinned animation: show the hero with the window already open. */
+  /* No pinned zoom animation; hero is a normal full-height section. */
   .hero-stage { height: auto; }
   .hero { position: relative; }
-  .hero__pane--l { transform: translateX(-105%); }
-  .hero__pane--r { transform: translateX(105%); }
-  .hero__mullion { opacity: 0; }
   /* Don't play background video for reduced-motion; show the poster still. */
   .hero__lake--video .hero__video { display: none; }
   .hero__lake--video { background: #0e1316 url("kv/hero.jpg") center / cover no-repeat; }
 }
 
 /* ---------- responsive ---------- */
-/* On small screens (and reduced-motion, below) drop the pinned scroll track:
-   the hero is a normal full-height section and the window sits open. */
+/* On small screens drop the pinned scroll track: the hero is a normal
+   full-height section (video hidden; poster shown — see .hero__lake--video). */
 @media (max-width: 640px) {
   .hero-stage { height: auto; }
   .hero { position: relative; }
-  .hero__pane--l { transform: translateX(-105%); }
-  .hero__pane--r { transform: translateX(105%); }
-  .hero__mullion { opacity: 0; }
 }
 @media (max-width: 860px) {
   .nav__links, .nav__cta { display: none; }
