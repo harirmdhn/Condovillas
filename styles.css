@@ -401,11 +401,13 @@ img { display: block; max-width: 100%; }
 /* ---------- enquire ---------- */
 .enquire { text-align: center; }
 .enquire__inner { max-width: 50ch; margin-inline: auto; }
-.enquire h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 1rem; }
+.enquire h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 1rem; white-space: nowrap; }
+/* On very small screens allow it to wrap so it never overflows the viewport. */
+@media (max-width: 460px) { .enquire h2 { white-space: normal; } }
 .enquire > .enquire__inner > p { color: var(--fg-muted); margin-bottom: 2.5rem; }
 .enquire__form { display: flex; flex-direction: column; align-items: center; gap: 1.75rem; }
 /* Three equal-width inputs in a row (wrap to stack on narrow screens). */
-.enquire__fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; width: 100%; }
+.enquire__fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; }
 .enquire__form input {
   background: var(--surface); border: 1px solid var(--line);
   border-radius: var(--radius); color: var(--fg); padding: 1rem 1.25rem; width: 100%;
