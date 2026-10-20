@@ -207,10 +207,18 @@
     "2": null,
   };
 
+  // Area figures per bedroom type for the Standard unit. Updates #standard-area.
+  const AREA_BY_BEDS = {
+    "4": "Nett Area 337.54 Sqm<br>Semigross Area 293.57 Sqm",
+    "3": "Nett Area 121.77 Sqm<br>Semigross Area 105.91 Sqm",
+    "2": "Nett Area 100.58 Sqm<br>Semigross Area 87.48 Sqm",
+  };
+
   document.querySelectorAll(".tipe__pills").forEach((group) => {
     const pills = Array.prototype.slice.call(group.querySelectorAll(".tipe__pill"));
     const row = group.closest("[data-tipe]");
     const grid = row ? row.querySelector(".tipe__grid") : null;
+    const areaEl = row ? row.querySelector(".tipe__area") : null;
 
     pills.forEach((pill) => {
       pill.addEventListener("click", () => {
@@ -220,6 +228,12 @@
           p.setAttribute("aria-selected", String(on));
         });
         const beds = pill.getAttribute("data-beds");
+
+        // Update the area line for this bedroom type.
+        if (areaEl && AREA_BY_BEDS[beds]) {
+          areaEl.innerHTML = AREA_BY_BEDS[beds];
+        }
+
         const spec = SPECS_BY_BEDS[beds];
         if (grid && spec && Array.isArray(spec)) {
           // spec = [{icon:"#ic-bed", label:"2 Bedroom"}, ...]
