@@ -226,25 +226,63 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- residence cards ---------- */
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
-.card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); transition: transform 0.5s var(--ease), border-color 0.5s; }
-.card:hover { transform: translateY(-6px); border-color: var(--primary); }
-.card__media {
-  aspect-ratio: 4 / 5;
-  background: var(--surface-2);
-  background-size: cover; background-position: center;
-  /* KV slots — replace gradients with url('kv/....jpg') once uploaded */
+/* ---------- Tipe Unit ---------- */
+.tipe__row {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
 }
-/* Placeholder tints echo the KV (sunset sky → lake). Swap for url('kv/*.jpg'). */
-.card__media--one   { background-image: linear-gradient(160deg, var(--sunset), oklch(0.55 0.06 220)); }
-.card__media--two   { background-image: linear-gradient(160deg, oklch(0.72 0.12 20), oklch(0.42 0.09 220)); }
-.card__media--three { background-image: linear-gradient(160deg, oklch(0.82 0.1 35),  oklch(0.5 0.08 250)); }
-.card__body { padding: 1.75rem; }
-.card__tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); }
-.card__body h3 { font-size: 1.8rem; margin: 0.5rem 0 0.75rem; }
-.card__body p { color: var(--fg-muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
-.specs { list-style: none; display: flex; gap: 1.25rem; border-top: 1px solid var(--line); padding-top: 1rem; }
-.specs li { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--fg-muted); text-transform: uppercase; }
+.tipe__row + .tipe__row { margin-top: clamp(3rem, 7vw, 6rem); }
+/* Standard row is mirrored (carousel left, info right). */
+.tipe__row--rev { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+
+.tipe__name { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
+.tipe__area { color: var(--fg-muted); font-size: 0.95rem; margin: 0.5rem 0 1.5rem; }
+.tipe__row--rev .tipe__info { text-align: right; }
+
+/* spec grid — 3 columns of icon cells with hairline dividers */
+.tipe__grid {
+  list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+}
+.tipe__grid li {
+  background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.6rem; text-align: center; padding: 1.4rem 0.8rem; min-height: 112px;
+}
+.tipe__grid span { font-size: 0.74rem; line-height: 1.3; color: var(--fg-muted); letter-spacing: 0.02em; max-width: 14ch; }
+.tipe__ic { width: 30px; height: 30px; fill: none; stroke: var(--primary); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* bedroom-type pills (Standard) */
+.tipe__pills { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
+.tipe__row--rev .tipe__pills { justify-content: flex-end; }
+.tipe__pill {
+  font: inherit; font-size: 0.86rem; cursor: pointer;
+  padding: 0.55rem 1.3rem; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--bg-pure); color: var(--fg); transition: all 0.3s var(--ease);
+}
+.tipe__pill:hover { border-color: var(--primary); }
+.tipe__pill.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* ---------- Carousel ---------- */
+.carousel { position: relative; border-radius: calc(var(--radius) * 3); overflow: hidden; box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5); }
+.carousel__track { display: flex; transition: transform 0.6s var(--ease); }
+.carousel__slide { flex: 0 0 100%; aspect-ratio: 16 / 10; background-size: cover; background-position: center; }
+/* CSS/SVG placeholder renders (swap for url('kv/*.jpg') when available). */
+.carousel__slide--a { background-image: linear-gradient(160deg, #cfe3ea, #7fae8c 55%, #5a7f6b); }
+.carousel__slide--b { background-image: linear-gradient(160deg, #f3e6cf, #e2a86a 55%, #8f6f55); }
+.carousel__slide--c { background-image: linear-gradient(160deg, #cfe0ec, #6fa0bf 55%, #3f6b8c); }
+.carousel__slide--d { background-image: linear-gradient(160deg, #e7d6e2, #a98ab0 55%, #6b5a7f); }
+.carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer;
+  background: oklch(1 0 0 / 0.75); color: var(--fg); font-size: 1.5rem; line-height: 1;
+  display: grid; place-items: center; backdrop-filter: blur(4px); transition: background 0.3s;
+}
+.carousel__arrow:hover { background: #fff; }
+.carousel__arrow--prev { left: 0.75rem; }
+.carousel__arrow--next { right: 0.75rem; }
+.carousel__dots { position: absolute; bottom: 0.9rem; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; gap: 0.5rem; }
+.carousel__dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: oklch(1 0 0 / 0.5); transition: background 0.3s, transform 0.3s; }
+.carousel__dot.is-active { background: #fff; transform: scale(1.25); }
 
 /* ---------- amenities ---------- */
 .amenities__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
@@ -359,7 +397,12 @@ img { display: block; max-width: 100%; }
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: flex; }
   .nav__links.is-open { display: flex; position: fixed; inset: 70px 0 auto 0; flex-direction: column; gap: 1.5rem; padding: 2rem var(--gutter); background: var(--bg-pure); border-bottom: 1px solid var(--line); }
-  .cards, .amenities__grid { grid-template-columns: 1fr; }
+  .amenities__grid { grid-template-columns: 1fr; }
+  /* Stack Tipe Unit rows; carousel always on top, info below, left-aligned. */
+  .tipe__row, .tipe__row--rev { grid-template-columns: 1fr; }
+  .tipe__row .carousel { order: -1; }
+  .tipe__row--rev .tipe__info { text-align: left; }
+  .tipe__row--rev .tipe__pills { justify-content: flex-start; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .gallery__item--wide { grid-column: span 2; }
   .location { grid-template-columns: 1fr; }

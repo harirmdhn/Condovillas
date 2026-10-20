@@ -111,4 +111,80 @@
     window.addEventListener("resize", tickHero, { passive: true });
     renderHero(); // set initial state
   }
+
+  /* ============================================================
+     Tipe Unit: image carousels + bedroom-type pills
+     ============================================================ */
+
+  // --- Carousels: arrows + auto-generated dots, with wrap-around. ---
+  document.querySelectorAll("[data-carousel]").forEach((root) => {
+    const track = root.querySelector(".carousel__track");
+    const slides = Array.prototype.slice.call(root.querySelectorAll(".carousel__slide"));
+    const dotsWrap = root.querySelector("[data-car-dots]");
+    const prev = root.querySelector("[data-car-prev]");
+    const next = root.querySelector("[data-car-next]");
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+
+    // Build one dot per slide.
+    const dots = slides.map((_, i) => {
+      const b = document.createElement("button");
+      b.className = "carousel__dot" + (i === 0 ? " is-active" : "");
+      b.type = "button";
+      b.setAttribute("aria-label", "Go to slide " + (i + 1));
+      b.addEventListener("click", () => go(i));
+      dotsWrap && dotsWrap.appendChild(b);
+      return b;
+    });
+
+    function go(i) {
+      index = (i + slides.length) % slides.length;
+      track.style.transform = "translateX(" + -index * 100 + "%)";
+      dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
+    }
+
+    prev && prev.addEventListener("click", () => go(index - 1));
+    next && next.addEventListener("click", () => go(index + 1));
+  });
+
+  // --- Standard bedroom-type pills (tabs). ---
+  // Swapping is data-driven: fill SPECS_BY_BEDS with real per-type values and
+  // the grid updates on click. For now each type shows the same sample grid.
+  const SPECS_BY_BEDS = {
+    "4": null, // null => keep the markup's default (sample) grid
+    "3": null,
+    "2": null,
+  };
+
+  document.querySelectorAll(".tipe__pills").forEach((group) => {
+    const pills = Array.prototype.slice.call(group.querySelectorAll(".tipe__pill"));
+    const row = group.closest("[data-tipe]");
+    const grid = row ? row.querySelector(".tipe__grid") : null;
+
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        pills.forEach((p) => {
+          const on = p === pill;
+          p.classList.toggle("is-active", on);
+          p.setAttribute("aria-selected", String(on));
+        });
+        const beds = pill.getAttribute("data-beds");
+        const spec = SPECS_BY_BEDS[beds];
+        if (grid && spec && Array.isArray(spec)) {
+          // spec = [{icon:"#ic-bed", label:"2 Bedroom"}, ...]
+          grid.innerHTML = spec
+            .map(
+              (s) =>
+                '<li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="' +
+                s.icon +
+                '"/></svg><span>' +
+                s.label +
+                "</span></li>"
+            )
+            .join("");
+        }
+      });
+    });
+  });
 })();

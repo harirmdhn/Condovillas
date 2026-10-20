@@ -78,47 +78,88 @@
     </p>
   </section>
 
-  <!-- ============ RESIDENCES ============ -->
-  <section class="section" id="residences">
-    <div class="section__head reveal">
+  <!-- ============ TIPE UNIT (The Collection) ============ -->
+  <!-- Inline SVG icon sprite reused by every spec cell below. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="ic-floor"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="8" cy="9" r="2.4"/><path d="M12 8h6M12 11h6M6 15h12"/></g>
+      <g id="ic-bed"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15h18M3 18v2M21 18v2"/><path d="M6 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M12 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2"/></g>
+      <g id="ic-bath"><path d="M4 11V6a2 2 0 0 1 2-2 2 2 0 0 1 2 2M4 11h16v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-2ZM7 17l-1 3M18 17l1 3"/></g>
+      <g id="ic-living"><path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M3 11h18a1 1 0 0 1 1 1v4h-2v2H5v-2H3v-4a1 1 0 0 1 0 0Z"/></g>
+      <g id="ic-dining"><circle cx="12" cy="6" r="2"/><path d="M12 8v4M6 20l2-5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1l2 5M4 18h16"/></g>
+      <g id="ic-kitchen"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M9 5v4M12 14h4M12 17h4"/></g>
+      <g id="ic-balcony"><path d="M5 10h14v10H5zM5 20V10M9 20V10M12 20V10M15 20V10M19 20V10M7 10l5-5 5 5"/></g>
+    </defs>
+  </svg>
+
+  <section class="section tipe" id="residences">
+    <div class="section__head reveal" style="text-align:center">
       <span class="kicker">01 — The Collection</span>
-      <h2>Three ways to live by the water.</h2>
+      <h2 style="max-width:none;margin-inline:auto">Tipe Unit</h2>
     </div>
-    <div class="cards">
-      <article class="card reveal">
-        <div class="card__media card__media--one"></div>
-        <div class="card__body">
-          <span class="card__tag">From $1.9M</span>
-          <h3>The Garden Villa</h3>
-          <p>Single-level living opening onto a private landscaped terrace at the water's edge.</p>
-          <ul class="specs">
-            <li>2 Bed</li><li>2.5 Bath</li><li>1,850 sq ft</li>
-          </ul>
+
+    <!-- ---- Part 1: Penthouse (spec grid left, carousel right) ---- -->
+    <article class="tipe__row reveal" data-tipe="penthouse">
+      <div class="tipe__info">
+        <h3 class="tipe__name">Penthouse</h3>
+        <p class="tipe__area">Luas Bangunan: 30–40 m²</p>
+        <ul class="tipe__grid">
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-floor"/></svg><span>1 Floor</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-bed"/></svg><span>1 Bedroom</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-bath"/></svg><span>1 Bathroom</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-living"/></svg><span>1 (Open Plan) Living Room</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-dining"/></svg><span>1 (Compact / Integrated) Dining Room</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-kitchen"/></svg><span>1 (Pantry) Kitchen</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-balcony"/></svg><span>1 Balcony</span></li>
+        </ul>
+      </div>
+
+      <div class="carousel" data-carousel aria-roledescription="carousel" aria-label="Penthouse gallery">
+        <div class="carousel__track">
+          <div class="carousel__slide carousel__slide--a" role="group" aria-label="Slide 1 of 4"></div>
+          <div class="carousel__slide carousel__slide--b" role="group" aria-label="Slide 2 of 4"></div>
+          <div class="carousel__slide carousel__slide--c" role="group" aria-label="Slide 3 of 4"></div>
+          <div class="carousel__slide carousel__slide--d" role="group" aria-label="Slide 4 of 4"></div>
         </div>
-      </article>
-      <article class="card reveal">
-        <div class="card__media card__media--two"></div>
-        <div class="card__body">
-          <span class="card__tag">From $2.8M</span>
-          <h3>The Sky Villa</h3>
-          <p>Dual-aspect corner residence with wraparound balcony and panoramic lake views.</p>
-          <ul class="specs">
-            <li>3 Bed</li><li>3.5 Bath</li><li>2,640 sq ft</li>
-          </ul>
+        <button class="carousel__arrow carousel__arrow--prev" data-car-prev aria-label="Previous image">‹</button>
+        <button class="carousel__arrow carousel__arrow--next" data-car-next aria-label="Next image">›</button>
+        <div class="carousel__dots" data-car-dots aria-label="Choose slide"></div>
+      </div>
+    </article>
+
+    <!-- ---- Part 2: Standard (carousel left, spec grid right) ---- -->
+    <article class="tipe__row tipe__row--rev reveal" data-tipe="standard">
+      <div class="carousel" data-carousel aria-roledescription="carousel" aria-label="Standard gallery">
+        <div class="carousel__track">
+          <div class="carousel__slide carousel__slide--a" role="group" aria-label="Slide 1 of 4"></div>
+          <div class="carousel__slide carousel__slide--b" role="group" aria-label="Slide 2 of 4"></div>
+          <div class="carousel__slide carousel__slide--c" role="group" aria-label="Slide 3 of 4"></div>
+          <div class="carousel__slide carousel__slide--d" role="group" aria-label="Slide 4 of 4"></div>
         </div>
-      </article>
-      <article class="card reveal">
-        <div class="card__media card__media--three"></div>
-        <div class="card__body">
-          <span class="card__tag">From $4.5M</span>
-          <h3>The Penthouse Villa</h3>
-          <p>Full-floor sanctuary with private rooftop garden, spa, and infinity edge pool over the lake.</p>
-          <ul class="specs">
-            <li>4 Bed</li><li>4.5 Bath</li><li>4,120 sq ft</li>
-          </ul>
+        <button class="carousel__arrow carousel__arrow--prev" data-car-prev aria-label="Previous image">‹</button>
+        <button class="carousel__arrow carousel__arrow--next" data-car-next aria-label="Next image">›</button>
+        <div class="carousel__dots" data-car-dots aria-label="Choose slide"></div>
+      </div>
+
+      <div class="tipe__info">
+        <div class="tipe__pills" role="tablist" aria-label="Standard bedroom type">
+          <button class="tipe__pill is-active" role="tab" aria-selected="true"  data-beds="4">4 Bedroom</button>
+          <button class="tipe__pill"           role="tab" aria-selected="false" data-beds="3">3 Bedroom</button>
+          <button class="tipe__pill"           role="tab" aria-selected="false" data-beds="2">2 Bedroom</button>
         </div>
-      </article>
-    </div>
+        <h3 class="tipe__name">Standard</h3>
+        <p class="tipe__area">Luas Area: 87–124 m²</p>
+        <ul class="tipe__grid">
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-floor"/></svg><span>1 Floor</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-bed"/></svg><span>1 Bedroom</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-bath"/></svg><span>1 Bathroom</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-living"/></svg><span>1 (Open Plan) Living Room</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-dining"/></svg><span>1 (Compact / Integrated) Dining Room</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-kitchen"/></svg><span>1 (Pantry) Kitchen</span></li>
+          <li><svg class="tipe__ic" viewBox="0 0 24 24"><use href="#ic-balcony"/></svg><span>1 Balcony</span></li>
+        </ul>
+      </div>
+    </article>
   </section>
 
   <!-- ============ AMENITIES ============ -->
