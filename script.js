@@ -201,10 +201,37 @@
   // --- Standard bedroom-type pills (tabs). ---
   // Swapping is data-driven: fill SPECS_BY_BEDS with real per-type values and
   // the grid updates on click. For now each type shows the same sample grid.
+  // Full spec grid per Standard bedroom type. Floor/Living/Dining/Kitchen are
+  // the same across types; Bedrooms/Bathrooms/Balconies/Parking vary.
+  const LIVING = { icon: "#ic-living", label: "1 (Open Plan) Living Room" };
+  const DINING = { icon: "#ic-dining", label: "1 (Compact / Integrated) Dining Room" };
+  const KITCHEN = { icon: "#ic-kitchen", label: "1 (Pantry) Kitchen" };
+  const FLOOR = { icon: "#ic-floor", label: "1 Floor" };
   const SPECS_BY_BEDS = {
-    "4": null, // null => keep the markup's default (sample) grid
-    "3": null,
-    "2": null,
+    "4": [
+      FLOOR,
+      { icon: "#ic-bed", label: "4+1 Bedrooms" },
+      { icon: "#ic-bath", label: "2+1 Bathrooms" },
+      LIVING, DINING, KITCHEN,
+      { icon: "#ic-balcony", label: "2 Balconies" },
+      { icon: "#ic-parking", label: "2 Parking Slots" },
+    ],
+    "3": [
+      FLOOR,
+      { icon: "#ic-bed", label: "3+1 Bedrooms" },
+      { icon: "#ic-bath", label: "2+1 Bathrooms" },
+      LIVING, DINING, KITCHEN,
+      { icon: "#ic-balcony", label: "1 Balcony" },
+      { icon: "#ic-parking", label: "1 Parking Slot" },
+    ],
+    "2": [
+      FLOOR,
+      { icon: "#ic-bed", label: "2+1 Bedrooms" },
+      { icon: "#ic-bath", label: "2+1 Bathrooms" },
+      LIVING, DINING, KITCHEN,
+      { icon: "#ic-balcony", label: "1 Balcony" },
+      { icon: "#ic-parking", label: "1 Parking Slot" },
+    ],
   };
 
   // Area figures per bedroom type for the Standard unit. Updates #standard-area.
