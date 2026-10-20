@@ -455,8 +455,6 @@ img { display: block; max-width: 100%; }
   .tipe__row .carousel__slide { min-height: 0; aspect-ratio: 16 / 10; }
   .tipe__row--rev .tipe__info { text-align: left; }
   .tipe__row--rev .tipe__pills { justify-content: flex-start; }
-  .gallery { grid-template-columns: repeat(2, 1fr); }
-  .gallery__item--wide { grid-column: span 2; }
   .location { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
