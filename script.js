@@ -6,15 +6,35 @@
   // (CSS keeps content visible when this class is absent.)
   document.documentElement.classList.add("js");
 
-  // Nav: solidify on scroll
+  // Nav: solidify on scroll + smart hide/show (hide on scroll down, show on up)
   const nav = document.querySelector(".nav");
-  const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 40);
+  const toggle = document.querySelector(".nav__toggle");
+  const links = document.querySelector(".nav__links");
+
+  let lastY = window.scrollY;
+  const HIDE_AFTER = 120; // don't hide until scrolled past the nav's own height
+  const DELTA = 6;        // ignore tiny jitter
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    nav.classList.toggle("is-scrolled", y > 40);
+
+    const diff = y - lastY;
+    if (Math.abs(diff) > DELTA) {
+      // Never hide while the mobile menu is open or near the very top.
+      const menuOpen = links.classList.contains("is-open");
+      if (diff > 0 && y > HIDE_AFTER && !menuOpen) {
+        nav.classList.add("nav--hidden");   // scrolling down → hide
+      } else if (diff < 0 || y <= HIDE_AFTER) {
+        nav.classList.remove("nav--hidden"); // scrolling up (or at top) → show
+      }
+      lastY = y;
+    }
+  };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
   // Mobile menu
-  const toggle = document.querySelector(".nav__toggle");
-  const links = document.querySelector(".nav__links");
   toggle.addEventListener("click", () => {
     const open = links.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", String(open));

@@ -102,6 +102,8 @@ img { display: block; max-width: 100%; }
   transition: all 0.4s var(--ease);
 }
 .nav.is-scrolled { border-bottom-color: var(--line); background: oklch(0.985 0.008 60 / 0.9); }
+/* Smart nav: slide up out of view when scrolling down, reappear on scroll up. */
+.nav--hidden { transform: translateY(-100%); }
 .nav__brand { display: flex; align-items: center; gap: 0.7rem; }
 .nav__mark {
   display: grid; place-items: center; width: 34px; height: 34px;
