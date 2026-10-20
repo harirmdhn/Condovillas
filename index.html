@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -257,9 +257,10 @@
       <h2>Request the full collection.</h2>
       <p>Join the private list for floor plans, pricing, and a tour of the show residence.</p>
       <form class="enquire__form" onsubmit="return false;">
-        <input type="text" placeholder="Full name" aria-label="Full name" required />
-        <input type="email" placeholder="Email address" aria-label="Email address" required />
-        <button type="submit" class="btn btn--gold">Request details</button>
+        <input type="text" placeholder="Full name" aria-label="Full name" autocomplete="name" required />
+        <input type="email" placeholder="Email address" aria-label="Email address" autocomplete="email" required />
+        <input type="tel" placeholder="Phone number" aria-label="Phone number" autocomplete="tel" required />
+        <button type="submit" class="btn btn--gold">Book Now</button>
       </form>
       <p class="enquire__fine">By registering you agree to be contacted by the CondoVilla sales team.</p>
     </div>
