@@ -250,6 +250,16 @@ img { display: block; max-width: 100%; }
 /* Center the info column vertically so it reads level with the carousel. */
 .tipe__info { align-self: center; }
 
+/* Standard block: align columns to the top and drop the carousel down by
+   the pill-strip height so its top edge lines up with the "Standard"
+   heading (not the pills above it). */
+.tipe__row--rev { align-items: start; }
+.tipe__row--rev .tipe__info { align-self: start; }
+.tipe__row--rev .carousel {
+  /* pill height (padding 0.55*2 + line 0.86 + border 2px) + its margin 1.25 */
+  margin-top: calc(0.55rem * 2 + 0.86rem + 2px + 1.25rem);
+}
+
 .tipe__name { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
 .tipe__area { color: var(--fg-muted); font-size: 0.95rem; margin: 0.5rem 0 1.5rem; }
 .tipe__row--rev .tipe__info { text-align: right; }
@@ -420,7 +430,7 @@ img { display: block; max-width: 100%; }
   .amenities__grid { grid-template-columns: 1fr; }
   /* Stack Tipe Unit rows; carousel always on top, info below, left-aligned. */
   .tipe__row, .tipe__row--rev { grid-template-columns: 1fr; }
-  .tipe__row .carousel { order: -1; min-height: 0; }
+  .tipe__row .carousel { order: -1; min-height: 0; margin-top: 0; }
   .tipe__row .carousel__slide { min-height: 0; aspect-ratio: 16 / 10; }
   .tipe__row--rev .tipe__info { text-align: left; }
   .tipe__row--rev .tipe__pills { justify-content: flex-start; }
