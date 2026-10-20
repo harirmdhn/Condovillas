@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -192,16 +192,24 @@
   </section>
 
   <!-- ============ GALLERY ============ -->
-  <section class="section" id="gallery">
+  <section class="section section--flush" id="gallery">
     <div class="section__head reveal">
       <span class="kicker">03 — Gallery</span>
       <h2>A sense of place.</h2>
     </div>
-    <div class="gallery">
-      <figure class="gallery__item gallery__item--tall reveal"></figure>
-      <figure class="gallery__item reveal"></figure>
-      <figure class="gallery__item reveal"></figure>
-      <figure class="gallery__item gallery__item--wide reveal"></figure>
+    <!-- Full-bleed, one-image-at-a-time slider (arrows + dots auto-built). -->
+    <div class="carousel carousel--gallery gallery-bleed" data-carousel aria-roledescription="carousel" aria-label="Gallery">
+      <div class="carousel__track">
+        <div class="carousel__slide carousel__slide--a" role="group" aria-label="Image 1 of 6"></div>
+        <div class="carousel__slide carousel__slide--b" role="group" aria-label="Image 2 of 6"></div>
+        <div class="carousel__slide carousel__slide--c" role="group" aria-label="Image 3 of 6"></div>
+        <div class="carousel__slide carousel__slide--d" role="group" aria-label="Image 4 of 6"></div>
+        <div class="carousel__slide carousel__slide--e" role="group" aria-label="Image 5 of 6"></div>
+        <div class="carousel__slide carousel__slide--f" role="group" aria-label="Image 6 of 6"></div>
+      </div>
+      <button class="carousel__arrow carousel__arrow--prev" data-car-prev aria-label="Previous image">‹</button>
+      <button class="carousel__arrow carousel__arrow--next" data-car-next aria-label="Next image">›</button>
+      <div class="carousel__dots" data-car-dots aria-label="Choose image"></div>
     </div>
   </section>
 

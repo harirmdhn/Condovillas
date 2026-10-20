@@ -339,20 +339,24 @@ img { display: block; max-width: 100%; }
 .fac__body h4 { font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; }
 .fac__body p { font-size: 0.92rem; color: oklch(0.97 0.01 60 / 0.9); margin-top: 0.35rem; max-width: 34ch; }
 
-/* ---------- gallery (KV-ready) ---------- */
-.gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 1rem; }
-.gallery__item {
-  border-radius: var(--radius); background: var(--surface-2);
-  background-size: cover; background-position: center;
-  background-image: linear-gradient(135deg, var(--surface-2), var(--surface));
-  position: relative; overflow: hidden;
+/* ---------- gallery (full-bleed carousel) ---------- */
+/* Break a child out to the full viewport width even inside a max-width
+   section, so the gallery slider spans edge-to-edge. */
+.gallery-bleed {
+  width: 100vw; max-width: 100vw;
+  margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+  border-radius: 0;
 }
-.gallery__item::after {
-  content: "KV"; position: absolute; inset: auto 0 0 auto; margin: 0.75rem;
-  font-size: 0.6rem; letter-spacing: 0.2em; color: var(--fg-muted); opacity: 0.5;
+/* One large image at a time; wide, cinematic frame. */
+.carousel--gallery { min-height: 0; }
+.carousel--gallery .carousel__slide { min-height: 0; aspect-ratio: 16 / 7; }
+/* Extra placeholder slides for the gallery (swap for url('kv/*.jpg')). */
+.carousel__slide--e { background-image: linear-gradient(160deg, #d9ead0, #9bbf86 55%, #5f8a5e); }
+.carousel__slide--f { background-image: linear-gradient(160deg, #ecd8cf, #c98b7a 55%, #8f5a55); }
+
+@media (max-width: 760px) {
+  .carousel--gallery .carousel__slide { aspect-ratio: 4 / 3; }
 }
-.gallery__item--tall { grid-row: span 2; }
-.gallery__item--wide { grid-column: span 2; }
 
 /* ---------- location ---------- */
 .location { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
