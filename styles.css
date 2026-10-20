@@ -310,7 +310,7 @@ img { display: block; max-width: 100%; }
 .fac__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 .fac {
   position: relative; border-radius: var(--radius); overflow: hidden;
-  min-height: 300px; display: flex; align-items: flex-end;
+  aspect-ratio: 1 / 1; display: flex; align-items: flex-end;
   background: var(--surface-2);
   box-shadow: 0 18px 40px -26px oklch(0.3 0.05 var(--brand-hue) / 0.5);
   transition: transform 0.5s var(--ease);
