@@ -93,6 +93,13 @@
   const smallScreen = window.matchMedia("(max-width: 640px)").matches;
   const heroOn = !reduce && !smallScreen && !!stage;
 
+  // Pause the hero background video when motion is reduced or on small screens
+  // (CSS already hides it and shows the poster still).
+  const heroVideo = document.querySelector(".hero__video");
+  if (heroVideo && (reduce || smallScreen)) {
+    try { heroVideo.pause(); heroVideo.removeAttribute("autoplay"); } catch (e) {}
+  }
+
   if (heroOn) {
     let ticking = false;
     const vh = () => window.innerHeight || document.documentElement.clientHeight;

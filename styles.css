@@ -164,6 +164,20 @@ img { display: block; max-width: 100%; }
   clip-path: polygon(0 30%, 50% 0, 100% 30%, 100% 100%, 0 100%);
   box-shadow: 0 22px 10px -8px rgba(60,90,100,.35);
 }
+/* Video fills the lake layer and covers the CSS-art fallback behind it.
+   The poster (kv/hero.jpg) shows while the MP4 loads. */
+.hero__lake--video .hero__video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 1;
+}
+/* Mobile / reduced-motion: don't autoplay the heavy video — show the poster
+   still frame instead (set as a background on the layer). */
+@media (max-width: 640px) {
+  .hero__lake--video .hero__video { display: none; }
+  .hero__lake--video {
+    background: #0e1316 url("kv/hero.jpg") center / cover no-repeat;
+  }
+}
 
 /* --- Layer 2: frosted-glass panes that slide apart (the "opening") --- */
 .hero__window { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
@@ -451,6 +465,9 @@ img { display: block; max-width: 100%; }
   .hero__pane--l { transform: translateX(-105%); }
   .hero__pane--r { transform: translateX(105%); }
   .hero__mullion { opacity: 0; }
+  /* Don't play background video for reduced-motion; show the poster still. */
+  .hero__lake--video .hero__video { display: none; }
+  .hero__lake--video { background: #0e1316 url("kv/hero.jpg") center / cover no-repeat; }
 }
 
 /* ---------- responsive ---------- */

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -37,8 +37,15 @@
        section arrives. Built with CSS/SVG art — no external image assets. -->
   <div class="hero-stage" id="hero-stage">
   <section class="hero" id="hero">
-    <!-- Layer 1: the view beyond the window (lake + villa) -->
-    <div class="hero__lake" data-zoom="1.4" aria-hidden="true"></div>
+    <!-- Layer 1: the view beyond the window (lake video). The layer still
+         zooms out / drifts via the parallax engine; the video fills it.
+         Poster + CSS art show while loading and as the reduced-motion/mobile
+         fallback (the video is not autoplayed on small screens). -->
+    <div class="hero__lake hero__lake--video" data-zoom="1.4" aria-hidden="true">
+      <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="kv/hero.jpg">
+        <source src="kv/Parallax-lowres.mp4" type="video/mp4" />
+      </video>
+    </div>
     <!-- Layer 2: foreground glass panes that slide apart -->
     <div class="hero__window" aria-hidden="true">
       <div class="hero__pane hero__pane--l" data-slide="-105"></div>
@@ -280,6 +287,6 @@
     <p class="footer__fine"><a href="v2/index.html" style="color:var(--primary);text-decoration:underline;">View the parallax version →</a></p>
   </footer>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
