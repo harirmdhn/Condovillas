@@ -314,13 +314,29 @@ img { display: block; max-width: 100%; }
 .carousel__dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: oklch(1 0 0 / 0.5); transition: background 0.3s, transform 0.3s; }
 .carousel__dot.is-active { background: #fff; transform: scale(1.25); }
 
-/* ---------- amenities ---------- */
-.amenities__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.amenity { background: var(--bg); padding: 2.5rem 2rem; transition: background 0.4s; }
-.amenity:hover { background: var(--surface); }
-.amenity__num { font-size: 1.6rem; color: var(--primary); display: block; margin-bottom: 1rem; }
-.amenity h4 { font-size: 1.4rem; margin-bottom: 0.5rem; }
-.amenity p { color: var(--fg-muted); font-size: 0.92rem; }
+/* ---------- facilities (image cards) ---------- */
+/* Let this section's heading sit on one line instead of the 14ch wrap. */
+.section__head--wide { max-width: none; }
+
+.fac__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.fac {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  min-height: 300px; display: flex; align-items: flex-end;
+  box-shadow: 0 18px 40px -26px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+  transition: transform 0.5s var(--ease);
+}
+.fac:hover { transform: translateY(-6px); }
+.fac__img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.7s var(--ease); }
+.fac:hover .fac__img { transform: scale(1.06); }
+/* Placeholder gradients — swap each for url('kv/<facility>.jpg') when ready. */
+.fac__img--gardens { background-image: linear-gradient(160deg, #bfe0c8, #7fae8c 55%, #4f7a5e); }
+.fac__img--gym     { background-image: linear-gradient(160deg, #cdd6de, #7f93a6 55%, #4d5e70); }
+.fac__img--club    { background-image: linear-gradient(160deg, #f3e6cf, #d9a86a 55%, #8f6f55); }
+.fac__img--parking { background-image: linear-gradient(160deg, #cfe0ec, #6fa0bf 55%, #3f6b8c); }
+.fac::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, oklch(0.2 0.04 var(--brand-hue) / 0.78)); }
+.fac__body { position: relative; z-index: 1; padding: 1.75rem; color: #fff; }
+.fac__body h4 { font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; }
+.fac__body p { font-size: 0.92rem; color: oklch(0.97 0.01 60 / 0.9); margin-top: 0.35rem; max-width: 34ch; }
 
 /* ---------- gallery (KV-ready) ---------- */
 .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 1rem; }
@@ -427,7 +443,7 @@ img { display: block; max-width: 100%; }
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: flex; }
   .nav__links.is-open { display: flex; position: fixed; inset: 70px 0 auto 0; flex-direction: column; gap: 1.5rem; padding: 2rem var(--gutter); background: var(--bg-pure); border-bottom: 1px solid var(--line); }
-  .amenities__grid { grid-template-columns: 1fr; }
+  .fac__grid { grid-template-columns: 1fr; }
   /* Stack Tipe Unit rows; carousel always on top, info below, left-aligned. */
   .tipe__row, .tipe__row--rev { grid-template-columns: 1fr; }
   .tipe__row .carousel { order: -1; min-height: 0; margin-top: 0; }
