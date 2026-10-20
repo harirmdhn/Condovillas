@@ -231,12 +231,18 @@ img { display: block; max-width: 100%; }
   display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: clamp(1.5rem, 4vw, 3.5rem); align-items: stretch;
 }
-/* Clear separation between the Penthouse and Standard blocks:
-   generous space + a hairline divider with a subtle gold centre. */
-.tipe__row + .tipe__row {
-  margin-top: clamp(4.5rem, 9vw, 8rem);
-  padding-top: clamp(4.5rem, 9vw, 8rem);
-  border-top: 1px solid var(--line);
+/* Divider between the Penthouse and Standard blocks: generous space, a full
+   hairline, and a short gold accent segment centred on it. */
+.tipe__divider {
+  position: relative;
+  margin-block: clamp(4rem, 8vw, 7rem);
+  height: 1px; background: var(--line);
+}
+.tipe__divider::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 72px; height: 3px; transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--sunset), transparent);
 }
 /* Standard row is mirrored (carousel left, info right). */
 .tipe__row--rev { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
