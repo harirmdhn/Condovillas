@@ -34,16 +34,29 @@
     line-height:1.45; max-width:34ch; margin-inline:auto; font-weight:400;
   }
 
-  /* ===== Variant 2: left-aligned + vertical gold accent ===== */
-  .intro--v2 .intro__wrap{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:start;max-width:52ch}
+  /* ===== Variant 2: image-left + left-aligned text-right with gold accent ===== */
+  .intro--v2 .intro__wrap{
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:clamp(1.5rem,5vw,4rem); align-items:center;
+  }
+  .intro--v2 .intro__img{
+    aspect-ratio:4/5; border-radius:4px; overflow:hidden;
+    background:linear-gradient(160deg,#cfe3ea,#7fae8c 55%,#4f7a5e);
+    box-shadow:0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue)/0.5);
+  }
+  .intro--v2 .intro__body{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.25rem,3vw,2.25rem);align-items:start}
   .intro--v2 .rule{width:2px;align-self:stretch;background:linear-gradient(var(--sunset),transparent)}
   .intro--v2 .kicker{margin-bottom:1rem;display:block}
   .intro--v2 .intro__text{
-    font-family:var(--font-serif); font-size:clamp(1.5rem,3.2vw,2.2rem);
+    font-family:var(--font-serif); font-size:clamp(1.4rem,2.6vw,2rem);
     line-height:1.5; font-weight:400; text-align:left;
   }
-  @media(max-width:560px){
+  @media(max-width:760px){
     .intro--v2 .intro__wrap{grid-template-columns:1fr}
+    .intro--v2 .intro__img{aspect-ratio:16/10}
+  }
+  @media(max-width:560px){
+    .intro--v2 .intro__body{grid-template-columns:1fr}
     .intro--v2 .rule{display:none}
   }
 </style>
@@ -64,18 +77,21 @@
 
   <div class="divider"></div>
 
-  <p class="label">▼ Variant 2 — left-aligned with a vertical gold accent line</p>
+  <p class="label">▼ Variant 2 — image left, left-aligned text right with gold accent (placeholder image)</p>
   <section class="intro intro--v2">
     <div class="intro__wrap">
-      <div class="rule" aria-hidden="true"></div>
-      <div>
-        <span class="kicker">A Way of Life</span>
-        <p class="intro__text">
-          Inspired by the French way of life, CondoVilla savours every moment with
-          <em class="hl">passion and elegance</em>, where pleasure, beauty, and wellness
-          become part of everyday routines. Because a good life is not measured by what
-          you possess, but by <em class="hl">how you live</em>.
-        </p>
+      <div class="intro__img" aria-hidden="true"></div>
+      <div class="intro__body">
+        <div class="rule" aria-hidden="true"></div>
+        <div>
+          <span class="kicker">A Way of Life</span>
+          <p class="intro__text">
+            Inspired by the French way of life, CondoVilla savours every moment with
+            <em class="hl">passion and elegance</em>, where pleasure, beauty, and wellness
+            become part of everyday routines. Because a good life is not measured by what
+            you possess, but by <em class="hl">how you live</em>.
+          </p>
+        </div>
       </div>
     </div>
   </section>
