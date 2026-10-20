@@ -347,9 +347,9 @@ img { display: block; max-width: 100%; }
   margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
   border-radius: 0;
 }
-/* One large image at a time; wide, cinematic frame. */
+/* One large image at a time; 16:9 frame. */
 .carousel--gallery { min-height: 0; }
-.carousel--gallery .carousel__slide { min-height: 0; aspect-ratio: 16 / 7; }
+.carousel--gallery .carousel__slide { min-height: 0; aspect-ratio: 16 / 9; }
 /* Extra placeholder slides for the gallery (swap for url('kv/*.jpg')). */
 .carousel__slide--e { background-image: linear-gradient(160deg, #d9ead0, #9bbf86 55%, #5f8a5e); }
 .carousel__slide--f { background-image: linear-gradient(160deg, #ecd8cf, #c98b7a 55%, #8f5a55); }
