@@ -170,14 +170,8 @@ img { display: block; max-width: 100%; }
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; z-index: 1;
 }
-/* Mobile / reduced-motion: don't autoplay the heavy video — show the poster
-   still frame instead (set as a background on the layer). */
-@media (max-width: 640px) {
-  .hero__lake--video .hero__video { display: none; }
-  .hero__lake--video {
-    background: #0e1316 url("kv/hero.jpg") center / cover no-repeat;
-  }
-}
+/* (Testing: scroll-scrub is enabled on mobile too, so the video is NOT hidden
+   on small screens — see the JS. Reduced-motion still falls back to poster.) */
 
 /* Left-side scrim for headline legibility (sits above the video, below text). */
 .hero::after {
@@ -461,12 +455,7 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- responsive ---------- */
-/* On small screens drop the pinned scroll track: the hero is a normal
-   full-height section (video hidden; poster shown — see .hero__lake--video). */
-@media (max-width: 640px) {
-  .hero-stage { height: auto; }
-  .hero { position: relative; }
-}
+/* (Testing: pinned scroll track kept on mobile so the scroll-scrub works.) */
 @media (max-width: 860px) {
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: flex; }

@@ -82,12 +82,12 @@
   const scrollHint = document.getElementById("hero-scroll");
   const heroVideo = document.querySelector(".hero__video");
 
-  const smallScreen = window.matchMedia("(max-width: 640px)").matches;
-  const heroOn = !reduce && !smallScreen && !!stage && !!heroVideo;
+  // NOTE: scroll-scrub now runs on mobile too (removed the small-screen guard)
+  // so it can be tested on phones. Still disabled for reduced-motion.
+  const heroOn = !reduce && !!stage && !!heroVideo;
 
-  // On reduced-motion / small screens we don't scrub; CSS hides the video and
-  // shows the poster still, so just make sure it isn't playing.
-  if (heroVideo && (reduce || smallScreen)) {
+  // Reduced-motion: don't scrub; make sure the video isn't playing.
+  if (heroVideo && reduce) {
     try { heroVideo.pause(); } catch (e) {}
   }
 
@@ -156,6 +156,8 @@
       init();
     } else {
       heroVideo.addEventListener("loadedmetadata", init, { once: true });
+      // Mobile browsers often won't buffer a non-autoplay video until nudged.
+      try { heroVideo.load(); } catch (e) {}
     }
 
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
