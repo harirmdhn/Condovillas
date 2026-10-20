@@ -49,4 +49,35 @@
     // (e.g. no scroll event, print, or edge-case layouts).
     setTimeout(() => items.forEach((el) => el.classList.add("is-in")), 2500);
   }
+
+  /* ---------- Hero parallax (lightweight) ----------
+     The hero background image drifts slower than the page as you scroll,
+     giving a sense of depth. Disabled for reduced-motion and small screens
+     (where fixed/parallax backgrounds feel janky and cost battery). */
+  const heroBg = document.querySelector(".hero__bg");
+  const smallScreen = window.matchMedia("(max-width: 640px)").matches;
+  const parallaxOn = heroBg && !reduce && !smallScreen;
+
+  if (parallaxOn) {
+    const SPEED = 0.35; // 0 = fixed to page, 1 = scrolls with page
+    let ticking = false;
+
+    const render = () => {
+      // Positive offset moves the image down as the page scrolls up,
+      // so it appears to lag behind — the classic parallax feel.
+      const shift = window.scrollY * SPEED;
+      heroBg.style.transform = "translate3d(0," + shift.toFixed(2) + "px,0)";
+      ticking = false;
+    };
+
+    const requestTick = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(render);
+      }
+    };
+
+    window.addEventListener("scroll", requestTick, { passive: true });
+    render(); // set initial position
+  }
 })();

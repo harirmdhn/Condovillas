@@ -127,11 +127,14 @@ img { display: block; max-width: 100%; }
 }
 /* KV image on its own layer. Anchored to the RIGHT and scaled up so the
    viewport crops off the image's left portion — where the baked-in
-   "Voilà" text sits — showing the residences, lake and picnic instead. */
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: 0;
+   "Voilà" text sits — showing the residences, lake and picnic instead.
+   The layer is taller than the hero (top/bottom overscan) so the parallax
+   drift never exposes an edge. JS translates it slower than the page. */
+.hero__bg {
+  position: absolute; left: 0; right: 0; top: -15%; bottom: -15%; z-index: 0;
   background: url("kv/hero.jpg") right center / cover no-repeat;
   background-size: 168% auto;
+  will-change: transform;
 }
 /* Left-side scrim for headline legibility (not mirrored). */
 .hero::after {
