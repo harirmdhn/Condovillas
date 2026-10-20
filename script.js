@@ -117,15 +117,19 @@
     };
 
     // Ease currentTime toward the scroll target for smooth scrubbing.
+    // Don't issue a new seek while the previous one is still resolving — piling
+    // up seeks the decoder can't service is a major cause of stutter.
+    const EASE = 0.18;        // 0..1; higher = snappier, lower = floatier
     const loop = () => {
+      if (heroVideo.seeking) { rafId = window.requestAnimationFrame(loop); return; }
       const current = heroVideo.currentTime || 0;
       const diff = targetTime - current;
-      if (Math.abs(diff) < 0.015) {
+      if (Math.abs(diff) < 0.02) {
         try { heroVideo.currentTime = targetTime; } catch (e) {}
         rafId = null;
         return; // settled — stop until next scroll
       }
-      try { heroVideo.currentTime = current + diff * 0.2; } catch (e) {}
+      try { heroVideo.currentTime = current + diff * EASE; } catch (e) {}
       rafId = window.requestAnimationFrame(loop);
     };
 
