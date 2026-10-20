@@ -107,12 +107,17 @@
       return p < 0 ? 0 : p > 1 ? 1 : p;
     };
 
+    // Seeking exactly to `duration` is unreliable (some browsers clamp/loop),
+    // so cap targets just shy of the end.
+    const END_EPS = 0.05;
+    const endTime = () => Math.max(0, (heroVideo.duration || 0) - END_EPS);
+
     const computeTarget = () => {
       const d = heroVideo.duration;
       if (!isFinite(d) || d <= 0) return;
       const p = progress();
-      // Reversed: scrolling down plays the video backward (end -> start).
-      targetTime = (1 - p) * d;
+      // Reversed: top of page = end of clip; scrolling down rewinds to start.
+      targetTime = (1 - p) * (d - END_EPS);
       if (scrollHint) scrollHint.style.opacity = p > 0.03 ? "0" : "1";
       startLoop();
     };
@@ -142,7 +147,7 @@
       // Reversed scrub starts at the END of the clip (top of page = last frame).
       try {
         heroVideo.pause();
-        heroVideo.currentTime = isFinite(heroVideo.duration) ? heroVideo.duration : 0;
+        heroVideo.currentTime = endTime();
       } catch (e) {}
       computeTarget();
     };
