@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=23" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -50,13 +50,23 @@
   </div><!-- /.hero-stage -->
 
   <!-- ============ INTRO ============ -->
-  <section class="section intro">
-    <p class="intro__text reveal">
-      Inspired by the French way of life, CondoVilla savours every moment with
-      passion and elegance, where pleasure, beauty, and wellness become part of
-      everyday routines. Because a good life is not measured by what you possess,
-      but by how you live.
-    </p>
+  <section class="section intro intro--split">
+    <div class="intro__wrap reveal">
+      <!-- Image slot (blank for now) — drop a photo via CSS .intro__img later. -->
+      <div class="intro__img" aria-hidden="true"></div>
+      <div class="intro__body">
+        <div class="intro__rule" aria-hidden="true"></div>
+        <div>
+          <span class="kicker">A Way of Life</span>
+          <p class="intro__text">
+            Inspired by the French way of life, CondoVilla savours every moment with
+            <em>passion and elegance</em>, where pleasure, beauty, and wellness become
+            part of everyday routines. Because a good life is not measured by what you
+            possess, but by <em>how you live</em>.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ============ TIPE UNIT (The Collection) ============ -->

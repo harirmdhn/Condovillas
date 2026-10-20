@@ -207,11 +207,32 @@ img { display: block; max-width: 100%; }
 }
 .hero__scroll::after { content: ""; display: block; width: 1px; height: 40px; margin: 0.6rem auto 0; background: linear-gradient(var(--sunset), transparent); }
 
-/* ---------- intro ---------- */
+/* ---------- intro (image left, text right — editorial split) ---------- */
 .intro { padding-block: clamp(3rem, 7vw, 6rem); }
+.intro__wrap {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem); align-items: center;
+}
+/* Blank image slot — swap to: background: url("kv/intro.jpg") center/cover; */
+.intro__img {
+  aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
+  background: var(--surface-2); border: 1px solid var(--line);
+  box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+}
+.intro__body { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.25rem, 3vw, 2.25rem); align-items: start; }
+.intro__rule { width: 2px; align-self: stretch; background: linear-gradient(var(--sunset), transparent); }
 .intro__text {
-  font-family: var(--font-serif); font-size: clamp(1.6rem, 3.6vw, 2.6rem);
-  line-height: 1.4; max-width: 24ch; margin-inline: auto; text-align: center; font-weight: 400;
+  font-family: var(--font-serif); font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.5; font-weight: 400; text-align: left;
+}
+.intro__text em { font-style: italic; color: var(--sunset); }
+@media (max-width: 760px) {
+  .intro__wrap { grid-template-columns: 1fr; }
+  .intro__img { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 560px) {
+  .intro__body { grid-template-columns: 1fr; }
+  .intro__rule { display: none; }
 }
 
 /* ---------- residence cards ---------- */
