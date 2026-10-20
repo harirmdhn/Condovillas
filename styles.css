@@ -228,12 +228,21 @@ img { display: block; max-width: 100%; }
 /* ---------- residence cards ---------- */
 /* ---------- Tipe Unit ---------- */
 .tipe__row {
-  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
+  display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: stretch;
 }
-.tipe__row + .tipe__row { margin-top: clamp(3rem, 7vw, 6rem); }
+/* Clear separation between the Penthouse and Standard blocks:
+   generous space + a hairline divider with a subtle gold centre. */
+.tipe__row + .tipe__row {
+  margin-top: clamp(4.5rem, 9vw, 8rem);
+  padding-top: clamp(4.5rem, 9vw, 8rem);
+  border-top: 1px solid var(--line);
+}
 /* Standard row is mirrored (carousel left, info right). */
-.tipe__row--rev { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+.tipe__row--rev { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
+
+/* Center the info column vertically so it reads level with the carousel. */
+.tipe__info { align-self: center; }
 
 .tipe__name { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
 .tipe__area { color: var(--fg-muted); font-size: 0.95rem; margin: 0.5rem 0 1.5rem; }
@@ -263,9 +272,14 @@ img { display: block; max-width: 100%; }
 .tipe__pill.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
 /* ---------- Carousel ---------- */
-.carousel { position: relative; border-radius: calc(var(--radius) * 3); overflow: hidden; box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5); }
-.carousel__track { display: flex; transition: transform 0.6s var(--ease); }
-.carousel__slide { flex: 0 0 100%; aspect-ratio: 16 / 10; background-size: cover; background-position: center; }
+.carousel {
+  position: relative; border-radius: calc(var(--radius) * 3); overflow: hidden;
+  box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+  /* Stretch to the row's height so it stays proportional to the spec grid. */
+  display: flex; min-height: 100%;
+}
+.carousel__track { display: flex; width: 100%; transition: transform 0.6s var(--ease); }
+.carousel__slide { flex: 0 0 100%; min-height: 420px; background-size: cover; background-position: center; }
 /* CSS/SVG placeholder renders (swap for url('kv/*.jpg') when available). */
 .carousel__slide--a { background-image: linear-gradient(160deg, #cfe3ea, #7fae8c 55%, #5a7f6b); }
 .carousel__slide--b { background-image: linear-gradient(160deg, #f3e6cf, #e2a86a 55%, #8f6f55); }
@@ -400,7 +414,8 @@ img { display: block; max-width: 100%; }
   .amenities__grid { grid-template-columns: 1fr; }
   /* Stack Tipe Unit rows; carousel always on top, info below, left-aligned. */
   .tipe__row, .tipe__row--rev { grid-template-columns: 1fr; }
-  .tipe__row .carousel { order: -1; }
+  .tipe__row .carousel { order: -1; min-height: 0; }
+  .tipe__row .carousel__slide { min-height: 0; aspect-ratio: 16 / 10; }
   .tipe__row--rev .tipe__info { text-align: left; }
   .tipe__row--rev .tipe__pills { justify-content: flex-start; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
