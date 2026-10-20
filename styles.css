@@ -115,34 +115,91 @@ img { display: block; max-width: 100%; }
 .nav__toggle { display: none; background: none; border: 0; flex-direction: column; gap: 6px; cursor: pointer; }
 .nav__toggle span { width: 24px; height: 1px; background: var(--fg); display: block; }
 
-/* ---------- hero ---------- */
+/* ---------- hero (window-opening parallax) ---------- */
+/* Tall scroll runway. The .hero inside is pinned (sticky) so the opening
+   animation plays out across the full height of this stage. Bigger track =
+   slower open + longer overall scroll. The window reaches fully-open at
+   OPEN_AT (see script.js) and holds wide open for the remaining runway. */
+:root { --hero-track: 520vh; }
+.hero-stage { position: relative; height: var(--hero-track); }
+
 .hero {
-  position: relative; min-height: 100vh; overflow: hidden;
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
   display: flex; flex-direction: column; justify-content: center;
   padding: 9rem var(--gutter) 4rem;
   max-width: none; width: 100%;
   color: oklch(0.99 0.005 60);
-  /* Sunset gradient as graceful fallback behind the image layer. */
+  /* Sunset gradient as graceful fallback behind the art layers. */
   background: linear-gradient(120deg, oklch(0.78 0.13 30), oklch(0.72 0.1 350) 45%, oklch(0.5 0.08 230));
 }
-/* KV image on its own layer. Anchored to the RIGHT and scaled up so the
-   viewport crops off the image's left portion — where the baked-in
-   "Voilà" text sits — showing the residences, lake and picnic instead. */
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: 0;
-  background: url("kv/hero.jpg") right center / cover no-repeat;
-  background-size: 168% auto;
+
+/* --- Layer 1: the view beyond the window (lake + villa), CSS/SVG art ---
+   Starts zoomed-in (data-zoom) and zooms out as the window opens. Oversized
+   with overscan so the zoom/drift never exposes an edge. */
+.hero__lake {
+  position: absolute; top: -10%; left: -6%; right: -6%; bottom: -10%; z-index: 0;
+  transform-origin: center 55%; will-change: transform;
+  background:
+    radial-gradient(60% 45% at 72% 30%, oklch(0.9 0.1 70 / 0.55), transparent 60%),
+    linear-gradient(180deg, #bfe0ec 0%, #dceef2 32%, #f3e6cf 52%, #efcf9f 60%, #e7f2f4 60%, #cfe7ea 100%);
 }
-/* Left-side scrim for headline legibility (not mirrored). */
+.hero__lake::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,.06) 0 2px, transparent 2px 10px) 0 62% / 100% 38% no-repeat,
+    linear-gradient(180deg, #9fd0d8 0%, #7cb9c6 40%, #5fa3b4 100%) 0 62% / 100% 38% no-repeat,
+    linear-gradient(180deg, #8fae7a, #6f9560) 0 56% / 100% 7% no-repeat,
+    radial-gradient(120% 90% at 20% 100%, #9bbf86 0 40%, transparent 42%) 0 48% / 60% 16% no-repeat,
+    radial-gradient(120% 90% at 85% 100%, #86b074 0 40%, transparent 42%) 40% 48% / 60% 16% no-repeat;
+}
+.hero__lake::after {
+  content: ""; position: absolute; left: 50%; top: 54%; width: 34px; height: 42px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(#fff, #f1e7d8) 0 0 / 100% 70% no-repeat,
+    linear-gradient(135deg, #c98b63, #b5744c) 0 0 / 100% 30% no-repeat;
+  clip-path: polygon(0 30%, 50% 0, 100% 30%, 100% 100%, 0 100%);
+  box-shadow: 0 22px 10px -8px rgba(60,90,100,.35);
+}
+
+/* --- Layer 2: frosted-glass panes that slide apart (the "opening") --- */
+.hero__window { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.hero__pane {
+  position: absolute; top: 0; bottom: 0; width: 50%; will-change: transform;
+  background: linear-gradient(115deg, rgba(255,255,255,.28), rgba(255,255,255,.08) 40%, rgba(210,220,225,.16) 100%);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(255,255,255,.35);
+}
+.hero__pane--l { left: 0;  border-right: none; box-shadow: inset -20px 0 40px -20px rgba(0,0,0,.25); }
+.hero__pane--r { right: 0; border-left: none;  box-shadow: inset 20px 0 40px -20px rgba(0,0,0,.25); }
+.hero__pane::before {
+  content: ""; position: absolute; top: -20%; left: 30%; width: 30%; height: 140%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.35) 50%, transparent);
+  transform: skewX(-12deg);
+}
+
+/* --- window frame + centre mullion (the mullion fades out as it opens) --- */
+.hero__frame {
+  position: absolute; inset: 6vh var(--gutter); z-index: 2; pointer-events: none;
+  border: 14px solid #2a2017; border-radius: var(--radius);
+  box-shadow: 0 0 0 2px rgba(0,0,0,.25), inset 0 0 60px rgba(0,0,0,.45);
+}
+.hero__mullion {
+  position: absolute; top: 6vh; bottom: 6vh; left: 50%; width: 14px;
+  transform: translateX(-50%); z-index: 2; pointer-events: none; will-change: opacity;
+  background: #2a2017; box-shadow: 0 0 0 2px rgba(0,0,0,.25);
+}
+
+/* Left-side scrim for headline legibility (sits above the art, below text). */
 .hero::after {
-  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: linear-gradient(90deg,
     oklch(0.22 0.04 var(--brand-hue) / 0.62) 0%,
     oklch(0.22 0.04 var(--brand-hue) / 0.22) 42%,
     transparent 68%);
 }
-.hero__inner { position: relative; z-index: 2; max-width: var(--maxw); margin-inline: auto; width: 100%; }
-.hero__scroll { z-index: 2; }
+.hero__inner { position: relative; z-index: 4; max-width: var(--maxw); margin-inline: auto; width: 100%; will-change: transform; }
+.hero__scroll { z-index: 4; transition: opacity 0.4s var(--ease); }
 .hero__glow { display: none; }
 .hero .eyebrow { color: oklch(0.95 0.02 60 / 0.85); }
 .hero__title { font-size: clamp(3rem, 9vw, 7rem); margin-bottom: 1.75rem; max-width: 16ch; text-shadow: 0 2px 30px oklch(0.2 0.05 var(--brand-hue) / 0.4); }
@@ -280,9 +337,24 @@ img { display: block; max-width: 100%; }
   * { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
+  /* No pinned animation: show the hero with the window already open. */
+  .hero-stage { height: auto; }
+  .hero { position: relative; }
+  .hero__pane--l { transform: translateX(-105%); }
+  .hero__pane--r { transform: translateX(105%); }
+  .hero__mullion { opacity: 0; }
 }
 
 /* ---------- responsive ---------- */
+/* On small screens (and reduced-motion, below) drop the pinned scroll track:
+   the hero is a normal full-height section and the window sits open. */
+@media (max-width: 640px) {
+  .hero-stage { height: auto; }
+  .hero { position: relative; }
+  .hero__pane--l { transform: translateX(-105%); }
+  .hero__pane--r { transform: translateX(105%); }
+  .hero__mullion { opacity: 0; }
+}
 @media (max-width: 860px) {
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: flex; }

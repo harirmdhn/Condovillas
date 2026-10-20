@@ -30,9 +30,22 @@
     </button>
   </header>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero">
-    <div class="hero__glow" aria-hidden="true"></div>
+  <!-- ============ HERO (parallax: a window opening onto the lake) ============ -->
+  <!-- The .hero is pinned (sticky) inside the tall .hero-stage track; as you
+       scroll, the glass panes slide apart and the lake view zooms out to
+       "open the window". It reaches fully-open and holds before the next
+       section arrives. Built with CSS/SVG art — no external image assets. -->
+  <div class="hero-stage" id="hero-stage">
+  <section class="hero" id="hero">
+    <!-- Layer 1: the view beyond the window (lake + villa) -->
+    <div class="hero__lake" data-zoom="1.4" aria-hidden="true"></div>
+    <!-- Layer 2: foreground glass panes that slide apart -->
+    <div class="hero__window" aria-hidden="true">
+      <div class="hero__pane hero__pane--l" data-slide="-105"></div>
+      <div class="hero__pane hero__pane--r" data-slide="105"></div>
+    </div>
+    <div class="hero__frame" aria-hidden="true"></div>
+    <div class="hero__mullion" id="hero-mullion" aria-hidden="true"></div>
     <div class="hero__inner">
       <p class="eyebrow reveal">Lakeside · Est. 2026</p>
       <h1 class="hero__title reveal">
@@ -52,8 +65,9 @@
         <div><dt>5★</dt><dd>Concierge service</dd></div>
       </dl>
     </div>
-    <span class="hero__scroll" aria-hidden="true">Scroll</span>
+    <span class="hero__scroll" id="hero-scroll" aria-hidden="true">Scroll</span>
   </section>
+  </div><!-- /.hero-stage -->
 
   <!-- ============ INTRO ============ -->
   <section class="section intro">
