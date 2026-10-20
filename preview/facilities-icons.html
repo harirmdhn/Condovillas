@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Facilities — Variant 2: Icon cards (PREVIEW)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --brand-hue:220;
+    --bg:oklch(0.985 0.008 60); --bg-pure:oklch(1 0 0);
+    --surface:oklch(0.965 0.012 60); --surface-2:oklch(0.93 0.018 50);
+    --line:oklch(0.80 0.02 60);
+    --fg:oklch(0.30 0.04 var(--brand-hue)); --fg-muted:oklch(0.50 0.03 var(--brand-hue));
+    --primary:oklch(0.42 0.09 var(--brand-hue)); --sunset:oklch(0.80 0.12 35);
+    --font-serif:"Cormorant Garamond",Georgia,serif; --font-sans:"Jost",system-ui,sans-serif;
+    --maxw:1200px; --gutter:clamp(1.25rem,5vw,5rem); --radius:4px;
+    --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font-family:var(--font-sans);line-height:1.6}
+  .note{background:var(--primary);color:#fff;text-align:center;padding:.6rem;font-size:.8rem;letter-spacing:.05em}
+  .section{max-width:var(--maxw);margin-inline:auto;padding:clamp(3.5rem,8vw,7rem) var(--gutter)}
+  .section__head{margin-bottom:clamp(2rem,4vw,3rem)}
+  .kicker{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary)}
+  .section__head h2{font-family:var(--font-serif);font-weight:500;font-size:clamp(2.2rem,5.5vw,4rem);max-width:16ch;margin-top:.4rem}
+
+  /* ---- Variant 2: icon cards (matches current amenities tile style) ---- */
+  .fac__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .fac{background:var(--bg);padding:2.5rem 2rem;transition:background .4s}
+  .fac:hover{background:var(--surface)}
+  .fac__ic{width:38px;height:38px;fill:none;stroke:var(--primary);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin-bottom:1.1rem}
+  .fac h4{font-family:var(--font-serif);font-size:1.5rem;font-weight:500;margin-bottom:.4rem}
+  .fac p{color:var(--fg-muted);font-size:.92rem}
+
+  @media (max-width:760px){.fac__grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="note">PREVIEW · Facilities — VARIANT 2: icon cards (same style as the current section)</div>
+  <section class="section">
+    <div class="section__head">
+      <span class="kicker">02 — Facilities</span>
+      <h2>Everything, considered.</h2>
+    </div>
+    <div class="fac__grid">
+      <article class="fac">
+        <svg class="fac__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-7M12 14c-4 0-6-2.5-6-6 3.5 0 6 2 6 6ZM12 14c4 0 6-2.5 6-6-3.5 0-6 2-6 6ZM12 11c0-3 1.5-5 4-6-0 3-1.5 5-4 6Z"/></svg>
+        <h4>Five Conceptual Gardens</h4>
+        <p>Five distinct landscaped gardens, each with its own character and planting.</p>
+      </article>
+      <article class="fac">
+        <svg class="fac__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8v8M17.5 8v8M4 10v4M20 10v4M6.5 12h11"/></svg>
+        <h4>The Gym</h4>
+        <p>A fully equipped fitness studio for strength, cardio, and recovery.</p>
+      </article>
+      <article class="fac">
+        <svg class="fac__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M4 20v-9l8-5 8 5v9M9 20v-5h6v5M4 11l8-5 8 5"/></svg>
+        <h4>The Clubhouse</h4>
+        <p>A residents' lounge and social space at the heart of the community.</p>
+      </article>
+      <article class="fac">
+        <svg class="fac__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 17V8h4a2.5 2.5 0 0 1 0 5H9"/></svg>
+        <h4>Dedicated &amp; Convenient Parking Spaces</h4>
+        <p>Secure, assigned parking with easy access for residents and guests.</p>
+      </article>
+    </div>
+  </section>
+</body>
+</html>

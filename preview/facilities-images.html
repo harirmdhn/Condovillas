@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Facilities — Variant 1: Image cards (PREVIEW)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --brand-hue:220;
+    --bg:oklch(0.985 0.008 60); --bg-pure:oklch(1 0 0);
+    --surface:oklch(0.965 0.012 60); --surface-2:oklch(0.93 0.018 50);
+    --line:oklch(0.80 0.02 60);
+    --fg:oklch(0.30 0.04 var(--brand-hue)); --fg-muted:oklch(0.50 0.03 var(--brand-hue));
+    --primary:oklch(0.42 0.09 var(--brand-hue)); --sunset:oklch(0.80 0.12 35);
+    --font-serif:"Cormorant Garamond",Georgia,serif; --font-sans:"Jost",system-ui,sans-serif;
+    --maxw:1200px; --gutter:clamp(1.25rem,5vw,5rem); --radius:4px;
+    --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font-family:var(--font-sans);line-height:1.6}
+  .note{background:var(--primary);color:#fff;text-align:center;padding:.6rem;font-size:.8rem;letter-spacing:.05em}
+  .section{max-width:var(--maxw);margin-inline:auto;padding:clamp(3.5rem,8vw,7rem) var(--gutter)}
+  .section__head{margin-bottom:clamp(2rem,4vw,3rem)}
+  .kicker{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--primary)}
+  .section__head h2{font-family:var(--font-serif);font-weight:500;font-size:clamp(2.2rem,5.5vw,4rem);max-width:16ch;margin-top:.4rem}
+
+  /* ---- Variant 1: image cards ---- */
+  .fac__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .fac{position:relative;border-radius:var(--radius);overflow:hidden;min-height:300px;display:flex;align-items:flex-end;
+       box-shadow:0 18px 40px -26px oklch(0.3 0.05 var(--brand-hue)/.5);transition:transform .5s var(--ease)}
+  .fac:hover{transform:translateY(-6px)}
+  .fac__img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease)}
+  .fac:hover .fac__img{transform:scale(1.06)}
+  .fac__img--gardens{background-image:linear-gradient(160deg,#bfe0c8,#7fae8c 55%,#4f7a5e)}
+  .fac__img--gym{background-image:linear-gradient(160deg,#cdd6de,#7f93a6 55%,#4d5e70)}
+  .fac__img--club{background-image:linear-gradient(160deg,#f3e6cf,#d9a86a 55%,#8f6f55)}
+  .fac__img--parking{background-image:linear-gradient(160deg,#cfe0ec,#6fa0bf 55%,#3f6b8c)}
+  .fac::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,oklch(0.2 0.04 var(--brand-hue)/.78))}
+  .fac__body{position:relative;z-index:1;padding:1.75rem;color:#fff}
+  .fac__body h4{font-family:var(--font-serif);font-size:1.7rem;font-weight:500}
+  .fac__body p{font-size:.92rem;color:oklch(0.97 0.01 60/.9);margin-top:.35rem;max-width:34ch}
+
+  @media (max-width:760px){.fac__grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="note">PREVIEW · Facilities — VARIANT 1: image cards (placeholder images; swap for real kv/*.jpg later)</div>
+  <section class="section">
+    <div class="section__head">
+      <span class="kicker">02 — Facilities</span>
+      <h2>Everything, considered.</h2>
+    </div>
+    <div class="fac__grid">
+      <article class="fac">
+        <div class="fac__img fac__img--gardens" aria-hidden="true"></div>
+        <div class="fac__body"><h4>Five Conceptual Gardens</h4><p>Five distinct landscaped gardens, each with its own character and planting.</p></div>
+      </article>
+      <article class="fac">
+        <div class="fac__img fac__img--gym" aria-hidden="true"></div>
+        <div class="fac__body"><h4>The Gym</h4><p>A fully equipped fitness studio for strength, cardio, and recovery.</p></div>
+      </article>
+      <article class="fac">
+        <div class="fac__img fac__img--club" aria-hidden="true"></div>
+        <div class="fac__body"><h4>The Clubhouse</h4><p>A residents' lounge and social space at the heart of the community.</p></div>
+      </article>
+      <article class="fac">
+        <div class="fac__img fac__img--parking" aria-hidden="true"></div>
+        <div class="fac__body"><h4>Dedicated &amp; Convenient Parking Spaces</h4><p>Secure, assigned parking with easy access for residents and guests.</p></div>
+      </article>
+    </div>
+  </section>
+</body>
+</html>
