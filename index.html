@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="stylesheet" href="styles.css?v=14" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -40,24 +40,13 @@
     <!-- Lake video layer. It zooms out via the parallax engine as you scroll;
          the video fills it. Poster + CSS art show while loading and as the
          reduced-motion/mobile fallback (video not autoplayed on small screens). -->
-    <div class="hero__lake hero__lake--video" data-zoom="1.4" aria-hidden="true">
-      <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="kv/hero.jpg">
+    <div class="hero__lake hero__lake--video" aria-hidden="true">
+      <video class="hero__video" muted playsinline preload="auto" poster="kv/hero.jpg">
         <source src="kv/Parallax-lowres.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="hero__inner">
       <p class="eyebrow reveal">Lakeside · Est. 2026</p>
-      <h1 class="hero__title reveal">
-        <em>Voilà,</em><br />your finest lake<br />living awaits.
-      </h1>
-      <p class="hero__lede reveal">
-        A limited collection of 24 French-inspired villa residences on the
-        water's edge — where every sunset arrives over the lake.
-      </p>
-      <div class="hero__actions reveal">
-        <a href="#residences" class="btn btn--gold">Explore residences</a>
-        <a href="#gallery" class="btn btn--line">View gallery</a>
-      </div>
       <dl class="hero__stats reveal">
         <div><dt>24</dt><dd>Lakefront residences</dd></div>
         <div><dt>120°</dt><dd>Water views</dd></div>
@@ -279,6 +268,6 @@
     <p class="footer__fine"><a href="v2/index.html" style="color:var(--primary);text-decoration:underline;">View the parallax version →</a></p>
   </footer>
 
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>

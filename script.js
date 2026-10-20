@@ -79,55 +79,73 @@
      Disabled for reduced-motion / small screens (CSS shows it open there).
      ============================================================ */
   const stage = document.getElementById("hero-stage");
-  const lake = document.querySelector(".hero__lake");
   const scrollHint = document.getElementById("hero-scroll");
-  const zoomStart = lake ? parseFloat(lake.getAttribute("data-zoom")) || 1 : 1;
-
-  // Fraction of the track over which the zoom-out completes; it holds the rest.
-  const OPEN_AT = 0.6;
+  const heroVideo = document.querySelector(".hero__video");
 
   const smallScreen = window.matchMedia("(max-width: 640px)").matches;
-  const heroOn = !reduce && !smallScreen && !!stage;
+  const heroOn = !reduce && !smallScreen && !!stage && !!heroVideo;
 
-  // Pause the hero background video when motion is reduced or on small screens
-  // (CSS already hides it and shows the poster still).
-  const heroVideo = document.querySelector(".hero__video");
+  // On reduced-motion / small screens we don't scrub; CSS hides the video and
+  // shows the poster still, so just make sure it isn't playing.
   if (heroVideo && (reduce || smallScreen)) {
-    try { heroVideo.pause(); heroVideo.removeAttribute("autoplay"); } catch (e) {}
+    try { heroVideo.pause(); } catch (e) {}
   }
 
   if (heroOn) {
-    let ticking = false;
+    // The video is driven by scroll position ("scrubbed"): scrolling down
+    // advances the frames, scrolling up rewinds. We never call play(); we set
+    // currentTime from how far the pinned stage has scrolled. A short lerp
+    // smooths seeking so it doesn't look stepped.
+    let targetTime = 0;   // where scroll says the video should be
+    let rafId = null;
     const vh = () => window.innerHeight || document.documentElement.clientHeight;
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
-    const renderHero = () => {
+    const progress = () => {
       const rect = stage.getBoundingClientRect();
       const travel = stage.offsetHeight - vh() || vh();
-      let raw = -rect.top / travel;
-      raw = raw < 0 ? 0 : raw > 1 ? 1 : raw;
-
-      const p = easeOutCubic(Math.min(raw / OPEN_AT, 1)); // zoom progress 0..1
-
-      if (lake) {
-        const scale = zoomStart + (1 - zoomStart) * p;
-        lake.style.transform = "translate3d(0,0,0) scale(" + scale.toFixed(4) + ")";
-      }
-      if (scrollHint) scrollHint.style.opacity = p > 0.15 ? "0" : "1";
-
-      ticking = false;
+      let p = -rect.top / travel;
+      return p < 0 ? 0 : p > 1 ? 1 : p;
     };
 
-    const tickHero = () => {
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(renderHero);
-      }
+    const computeTarget = () => {
+      const d = heroVideo.duration;
+      if (!isFinite(d) || d <= 0) return;
+      const p = progress();
+      targetTime = p * d;
+      if (scrollHint) scrollHint.style.opacity = p > 0.03 ? "0" : "1";
+      startLoop();
     };
 
-    window.addEventListener("scroll", tickHero, { passive: true });
-    window.addEventListener("resize", tickHero, { passive: true });
-    renderHero(); // set initial state
+    // Ease currentTime toward the scroll target for smooth scrubbing.
+    const loop = () => {
+      const current = heroVideo.currentTime || 0;
+      const diff = targetTime - current;
+      if (Math.abs(diff) < 0.015) {
+        try { heroVideo.currentTime = targetTime; } catch (e) {}
+        rafId = null;
+        return; // settled — stop until next scroll
+      }
+      try { heroVideo.currentTime = current + diff * 0.2; } catch (e) {}
+      rafId = window.requestAnimationFrame(loop);
+    };
+
+    const startLoop = () => { if (rafId === null) rafId = window.requestAnimationFrame(loop); };
+
+    const onScrollOrResize = () => computeTarget();
+
+    const init = () => {
+      try { heroVideo.pause(); heroVideo.currentTime = 0; } catch (e) {}
+      computeTarget();
+    };
+
+    if (heroVideo.readyState >= 1 && isFinite(heroVideo.duration)) {
+      init();
+    } else {
+      heroVideo.addEventListener("loadedmetadata", init, { once: true });
+    }
+
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
   }
 
   /* ============================================================
