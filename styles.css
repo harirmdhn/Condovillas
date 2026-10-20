@@ -102,6 +102,9 @@ img { display: block; max-width: 100%; }
   transition: all 0.4s var(--ease);
 }
 .nav.is-scrolled { border-bottom-color: var(--line); background: oklch(0.985 0.008 60 / 0.9); }
+/* Smart nav: slide up out of view when scrolling down, reappear on scroll up. */
+.nav { transition: transform 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease); }
+.nav.nav--hidden { transform: translateY(-110%); }
 .nav__brand { display: flex; align-items: center; gap: 0.7rem; }
 .nav__mark {
   display: grid; place-items: center; width: 34px; height: 34px;
@@ -115,34 +118,71 @@ img { display: block; max-width: 100%; }
 .nav__toggle { display: none; background: none; border: 0; flex-direction: column; gap: 6px; cursor: pointer; }
 .nav__toggle span { width: 24px; height: 1px; background: var(--fg); display: block; }
 
-/* ---------- hero ---------- */
+/* ---------- hero (window-opening parallax) ---------- */
+/* Tall scroll runway. The .hero inside is pinned (sticky) so the opening
+   animation plays out across the full height of this stage. Bigger track =
+   slower open + longer overall scroll. The window reaches fully-open at
+   OPEN_AT (see script.js) and holds wide open for the remaining runway. */
+:root { --hero-track: 520vh; }
+.hero-stage { position: relative; height: var(--hero-track); }
+
 .hero {
-  position: relative; min-height: 100vh; overflow: hidden;
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
   display: flex; flex-direction: column; justify-content: center;
   padding: 9rem var(--gutter) 4rem;
   max-width: none; width: 100%;
   color: oklch(0.99 0.005 60);
-  /* Sunset gradient as graceful fallback behind the image layer. */
+  /* Sunset gradient as graceful fallback behind the art layers. */
   background: linear-gradient(120deg, oklch(0.78 0.13 30), oklch(0.72 0.1 350) 45%, oklch(0.5 0.08 230));
 }
-/* KV image on its own layer. Anchored to the RIGHT and scaled up so the
-   viewport crops off the image's left portion — where the baked-in
-   "Voilà" text sits — showing the residences, lake and picnic instead. */
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: 0;
-  background: url("kv/hero.jpg") right center / cover no-repeat;
-  background-size: 168% auto;
+
+/* --- Layer 1: the view beyond the window (lake + villa), CSS/SVG art ---
+   Starts zoomed-in (data-zoom) and zooms out as the window opens. Oversized
+   with overscan so the zoom/drift never exposes an edge. */
+.hero__lake {
+  position: absolute; top: -10%; left: -6%; right: -6%; bottom: -10%; z-index: 0;
+  transform-origin: center 55%; will-change: transform;
+  background:
+    radial-gradient(60% 45% at 72% 30%, oklch(0.9 0.1 70 / 0.55), transparent 60%),
+    linear-gradient(180deg, #bfe0ec 0%, #dceef2 32%, #f3e6cf 52%, #efcf9f 60%, #e7f2f4 60%, #cfe7ea 100%);
 }
-/* Left-side scrim for headline legibility (not mirrored). */
+.hero__lake::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,.06) 0 2px, transparent 2px 10px) 0 62% / 100% 38% no-repeat,
+    linear-gradient(180deg, #9fd0d8 0%, #7cb9c6 40%, #5fa3b4 100%) 0 62% / 100% 38% no-repeat,
+    linear-gradient(180deg, #8fae7a, #6f9560) 0 56% / 100% 7% no-repeat,
+    radial-gradient(120% 90% at 20% 100%, #9bbf86 0 40%, transparent 42%) 0 48% / 60% 16% no-repeat,
+    radial-gradient(120% 90% at 85% 100%, #86b074 0 40%, transparent 42%) 40% 48% / 60% 16% no-repeat;
+}
+.hero__lake::after {
+  content: ""; position: absolute; left: 50%; top: 54%; width: 34px; height: 42px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(#fff, #f1e7d8) 0 0 / 100% 70% no-repeat,
+    linear-gradient(135deg, #c98b63, #b5744c) 0 0 / 100% 30% no-repeat;
+  clip-path: polygon(0 30%, 50% 0, 100% 30%, 100% 100%, 0 100%);
+  box-shadow: 0 22px 10px -8px rgba(60,90,100,.35);
+}
+/* Video fills the lake layer and covers the CSS-art fallback behind it.
+   The poster (kv/hero.jpg) shows while the MP4 loads. */
+.hero__lake--video .hero__video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 1;
+}
+/* (Testing: scroll-scrub is enabled on mobile too, so the video is NOT hidden
+   on small screens — see the JS. Reduced-motion still falls back to poster.) */
+
+/* Left-side scrim for headline legibility (sits above the video, below text). */
 .hero::after {
-  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: linear-gradient(90deg,
     oklch(0.22 0.04 var(--brand-hue) / 0.62) 0%,
     oklch(0.22 0.04 var(--brand-hue) / 0.22) 42%,
     transparent 68%);
 }
-.hero__inner { position: relative; z-index: 2; max-width: var(--maxw); margin-inline: auto; width: 100%; }
-.hero__scroll { z-index: 2; }
+.hero__inner { position: relative; z-index: 4; max-width: var(--maxw); margin-inline: auto; width: 100%; will-change: transform; }
+.hero__scroll { z-index: 4; transition: opacity 0.4s var(--ease); }
 .hero__glow { display: none; }
 .hero .eyebrow { color: oklch(0.95 0.02 60 / 0.85); }
 .hero__title { font-size: clamp(3rem, 9vw, 7rem); margin-bottom: 1.75rem; max-width: 16ch; text-shadow: 0 2px 30px oklch(0.2 0.05 var(--brand-hue) / 0.4); }
@@ -161,56 +201,166 @@ img { display: block; max-width: 100%; }
 }
 .hero__scroll::after { content: ""; display: block; width: 1px; height: 40px; margin: 0.6rem auto 0; background: linear-gradient(var(--sunset), transparent); }
 
-/* ---------- intro ---------- */
+/* ---------- intro (image left, text right — editorial split) ---------- */
 .intro { padding-block: clamp(3rem, 7vw, 6rem); }
+.intro__wrap {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem); align-items: center;
+}
+/* Blank image slot — swap to: background: url("kv/intro.jpg") center/cover; */
+.intro__img {
+  aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden;
+  background: var(--surface-2); border: 1px solid var(--line);
+  box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+}
+.intro__body { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.25rem, 3vw, 2.25rem); align-items: start; }
+.intro__rule { width: 2px; align-self: stretch; background: linear-gradient(var(--sunset), transparent); }
 .intro__text {
-  font-family: var(--font-serif); font-size: clamp(1.6rem, 3.6vw, 2.6rem);
-  line-height: 1.4; max-width: 24ch; margin-inline: auto; text-align: center; font-weight: 400;
+  font-family: var(--font-serif); font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.5; font-weight: 400; text-align: left;
+}
+.intro__text em { font-style: italic; color: var(--sunset); }
+@media (max-width: 760px) {
+  .intro__wrap { grid-template-columns: 1fr; }
+  .intro__img { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 560px) {
+  .intro__body { grid-template-columns: 1fr; }
+  .intro__rule { display: none; }
 }
 
 /* ---------- residence cards ---------- */
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
-.card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); transition: transform 0.5s var(--ease), border-color 0.5s; }
-.card:hover { transform: translateY(-6px); border-color: var(--primary); }
-.card__media {
-  aspect-ratio: 4 / 5;
+/* ---------- Tipe Unit ---------- */
+.tipe__row {
+  display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); align-items: stretch;
+}
+/* Divider between the Penthouse and Standard blocks: generous space, a full
+   hairline, and a short gold accent segment centred on it. */
+.tipe__divider {
+  position: relative;
+  margin-block: clamp(4rem, 8vw, 7rem);
+  height: 1px; background: var(--line);
+}
+.tipe__divider::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 72px; height: 3px; transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--sunset), transparent);
+}
+/* Standard row is mirrored (carousel left, info right). */
+.tipe__row--rev { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
+
+/* Center the info column vertically so it reads level with the carousel. */
+.tipe__info { align-self: center; }
+
+/* Standard block: align columns to the top and drop the carousel down by
+   the pill-strip height so its top edge lines up with the "Standard"
+   heading (not the pills above it). */
+.tipe__row--rev { align-items: start; }
+.tipe__row--rev .tipe__info { align-self: start; }
+.tipe__row--rev .carousel {
+  /* pill height (padding 0.55*2 + line 0.86 + border 2px) + its margin 1.25 */
+  margin-top: calc(0.55rem * 2 + 0.86rem + 2px + 1.25rem);
+}
+
+.tipe__name { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
+.tipe__area { color: var(--fg-muted); font-size: 0.95rem; margin: 0.5rem 0 1.5rem; }
+.tipe__row--rev .tipe__info { text-align: right; }
+
+/* spec grid — 3 columns of icon cells with hairline dividers */
+.tipe__grid {
+  list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+}
+.tipe__grid li {
+  background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.6rem; text-align: center; padding: 1.4rem 0.8rem; min-height: 112px;
+}
+.tipe__grid span { font-size: 0.74rem; line-height: 1.3; color: var(--fg-muted); letter-spacing: 0.02em; max-width: 14ch; }
+.tipe__ic { width: 30px; height: 30px; fill: none; stroke: var(--primary); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* bedroom-type pills (Standard) */
+.tipe__pills { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
+.tipe__row--rev .tipe__pills { justify-content: flex-end; }
+.tipe__pill {
+  font: inherit; font-size: 0.86rem; cursor: pointer;
+  padding: 0.55rem 1.3rem; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--bg-pure); color: var(--fg); transition: all 0.3s var(--ease);
+}
+.tipe__pill:hover { border-color: var(--primary); }
+.tipe__pill.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* ---------- Carousel ---------- */
+.carousel {
+  position: relative; border-radius: calc(var(--radius) * 3); overflow: hidden;
+  box-shadow: 0 20px 50px -24px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+  /* Stretch to the row's height so it stays proportional to the spec grid. */
+  display: flex; min-height: 100%;
+}
+.carousel__track { display: flex; width: 100%; transition: transform 0.6s var(--ease); }
+.carousel__slide { flex: 0 0 100%; min-height: 420px; background-size: cover; background-position: center; }
+/* CSS/SVG placeholder renders (swap for url('kv/*.jpg') when available). */
+.carousel__slide--a { background-image: linear-gradient(160deg, #cfe3ea, #7fae8c 55%, #5a7f6b); }
+.carousel__slide--b { background-image: linear-gradient(160deg, #f3e6cf, #e2a86a 55%, #8f6f55); }
+.carousel__slide--c { background-image: linear-gradient(160deg, #cfe0ec, #6fa0bf 55%, #3f6b8c); }
+.carousel__slide--d { background-image: linear-gradient(160deg, #e7d6e2, #a98ab0 55%, #6b5a7f); }
+.carousel__arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer;
+  background: oklch(1 0 0 / 0.75); color: var(--fg); font-size: 1.5rem; line-height: 1;
+  display: grid; place-items: center; backdrop-filter: blur(4px); transition: background 0.3s;
+}
+.carousel__arrow:hover { background: #fff; }
+.carousel__arrow--prev { left: 0.75rem; }
+.carousel__arrow--next { right: 0.75rem; }
+.carousel__dots { position: absolute; bottom: 0.9rem; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; gap: 0.5rem; }
+.carousel__dot { width: 9px; height: 9px; border-radius: 50%; border: none; padding: 0; cursor: pointer; background: oklch(1 0 0 / 0.5); transition: background 0.3s, transform 0.3s; }
+.carousel__dot.is-active { background: #fff; transform: scale(1.25); }
+
+/* ---------- facilities (image cards) ---------- */
+/* Let this section's heading sit on one line instead of the 14ch wrap. */
+.section__head--wide { max-width: none; }
+
+.fac__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.fac {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  aspect-ratio: 1 / 1; display: flex; align-items: flex-end;
   background: var(--surface-2);
-  background-size: cover; background-position: center;
-  /* KV slots — replace gradients with url('kv/....jpg') once uploaded */
+  box-shadow: 0 18px 40px -26px oklch(0.3 0.05 var(--brand-hue) / 0.5);
+  transition: transform 0.5s var(--ease);
 }
-/* Placeholder tints echo the KV (sunset sky → lake). Swap for url('kv/*.jpg'). */
-.card__media--one   { background-image: linear-gradient(160deg, var(--sunset), oklch(0.55 0.06 220)); }
-.card__media--two   { background-image: linear-gradient(160deg, oklch(0.72 0.12 20), oklch(0.42 0.09 220)); }
-.card__media--three { background-image: linear-gradient(160deg, oklch(0.82 0.1 35),  oklch(0.5 0.08 250)); }
-.card__body { padding: 1.75rem; }
-.card__tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); }
-.card__body h3 { font-size: 1.8rem; margin: 0.5rem 0 0.75rem; }
-.card__body p { color: var(--fg-muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
-.specs { list-style: none; display: flex; gap: 1.25rem; border-top: 1px solid var(--line); padding-top: 1rem; }
-.specs li { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--fg-muted); text-transform: uppercase; }
+.fac:hover { transform: translateY(-6px); }
+.fac__img { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; transition: transform 0.7s var(--ease); }
+.fac:hover .fac__img { transform: scale(1.06); }
+/* Placeholder gradients — swap each for url('kv/<facility>.jpg') when ready. */
+.fac__img--gardens { background-image: linear-gradient(160deg, #bfe0c8, #7fae8c 55%, #4f7a5e); }
+.fac__img--gym     { background-image: linear-gradient(160deg, #cdd6de, #7f93a6 55%, #4d5e70); }
+.fac__img--club    { background-image: linear-gradient(160deg, #f3e6cf, #d9a86a 55%, #8f6f55); }
+.fac__img--parking { background-image: linear-gradient(160deg, #cfe0ec, #6fa0bf 55%, #3f6b8c); }
+.fac::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, oklch(0.2 0.04 var(--brand-hue) / 0.78)); }
+.fac__body { position: relative; z-index: 1; padding: 1.75rem; color: #fff; }
+.fac__body h4 { font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; }
+.fac__body p { font-size: 0.92rem; color: oklch(0.97 0.01 60 / 0.9); margin-top: 0.35rem; max-width: 34ch; }
 
-/* ---------- amenities ---------- */
-.amenities__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.amenity { background: var(--bg); padding: 2.5rem 2rem; transition: background 0.4s; }
-.amenity:hover { background: var(--surface); }
-.amenity__num { font-size: 1.6rem; color: var(--primary); display: block; margin-bottom: 1rem; }
-.amenity h4 { font-size: 1.4rem; margin-bottom: 0.5rem; }
-.amenity p { color: var(--fg-muted); font-size: 0.92rem; }
+/* ---------- gallery (full-bleed carousel) ---------- */
+/* Break a child out to the full viewport width even inside a max-width
+   section, so the gallery slider spans edge-to-edge. */
+.gallery-bleed {
+  width: 100vw; max-width: 100vw;
+  margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+  border-radius: 0;
+}
+/* One large image at a time; 16:9 frame. */
+.carousel--gallery { min-height: 0; }
+.carousel--gallery .carousel__slide { min-height: 0; aspect-ratio: 16 / 9; }
+/* Extra placeholder slides for the gallery (swap for url('kv/*.jpg')). */
+.carousel__slide--e { background-image: linear-gradient(160deg, #d9ead0, #9bbf86 55%, #5f8a5e); }
+.carousel__slide--f { background-image: linear-gradient(160deg, #ecd8cf, #c98b7a 55%, #8f5a55); }
 
-/* ---------- gallery (KV-ready) ---------- */
-.gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 1rem; }
-.gallery__item {
-  border-radius: var(--radius); background: var(--surface-2);
-  background-size: cover; background-position: center;
-  background-image: linear-gradient(135deg, var(--surface-2), var(--surface));
-  position: relative; overflow: hidden;
+@media (max-width: 760px) {
+  .carousel--gallery .carousel__slide { aspect-ratio: 4 / 3; }
 }
-.gallery__item::after {
-  content: "KV"; position: absolute; inset: auto 0 0 auto; margin: 0.75rem;
-  font-size: 0.6rem; letter-spacing: 0.2em; color: var(--fg-muted); opacity: 0.5;
-}
-.gallery__item--tall { grid-row: span 2; }
-.gallery__item--wide { grid-column: span 2; }
 
 /* ---------- location ---------- */
 .location { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
@@ -252,16 +402,32 @@ img { display: block; max-width: 100%; }
 /* ---------- enquire ---------- */
 .enquire { text-align: center; }
 .enquire__inner { max-width: 50ch; margin-inline: auto; }
-.enquire h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 1rem; }
+.enquire h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 1rem; white-space: nowrap; }
+/* On very small screens allow it to wrap so it never overflows the viewport. */
+@media (max-width: 460px) { .enquire h2 { white-space: normal; } }
 .enquire > .enquire__inner > p { color: var(--fg-muted); margin-bottom: 2.5rem; }
-.enquire__form { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+.enquire__form { display: flex; flex-direction: column; align-items: center; gap: 1.75rem; }
+/* Three equal-width inputs in a row (wrap to stack on narrow screens). */
+.enquire__fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; }
 .enquire__form input {
-  flex: 1 1 220px; background: var(--surface); border: 1px solid var(--line);
-  border-radius: var(--radius); color: var(--fg); padding: 1rem 1.25rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); color: var(--fg); padding: 1rem 1.25rem; width: 100%;
   font-family: var(--font-sans); font-size: 0.95rem; transition: border-color 0.3s;
+}
+/* Book Now: separated below the fields, a little larger. */
+.enquire__submit { padding: 1.1rem 3rem; font-size: 1.05rem; }
+@media (max-width: 560px) {
+  .enquire__fields { grid-template-columns: 1fr; }
+  .enquire__submit { width: 100%; }
 }
 .enquire__form input::placeholder { color: var(--fg-muted); }
 .enquire__form input:focus { outline: none; border-color: var(--primary); }
+.enquire__thanks {
+  margin-top: 1.5rem; padding: 0.9rem 1.25rem;
+  background: oklch(0.42 0.09 var(--brand-hue) / 0.1);
+  border: 1px solid var(--primary); border-radius: var(--radius);
+  color: var(--primary-deep); font-size: 0.95rem;
+}
 .enquire__fine { font-size: 0.75rem; color: var(--fg-muted); margin-top: 1.5rem; }
 
 /* ---------- footer ---------- */
@@ -280,16 +446,27 @@ img { display: block; max-width: 100%; }
   * { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
+  /* No pinned zoom animation; hero is a normal full-height section. */
+  .hero-stage { height: auto; }
+  .hero { position: relative; }
+  /* Don't play background video for reduced-motion; show the poster still. */
+  .hero__lake--video .hero__video { display: none; }
+  .hero__lake--video { background: #0e1316 url("kv/hero.jpg") center / cover no-repeat; }
 }
 
 /* ---------- responsive ---------- */
+/* (Testing: pinned scroll track kept on mobile so the scroll-scrub works.) */
 @media (max-width: 860px) {
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: flex; }
   .nav__links.is-open { display: flex; position: fixed; inset: 70px 0 auto 0; flex-direction: column; gap: 1.5rem; padding: 2rem var(--gutter); background: var(--bg-pure); border-bottom: 1px solid var(--line); }
-  .cards, .amenities__grid { grid-template-columns: 1fr; }
-  .gallery { grid-template-columns: repeat(2, 1fr); }
-  .gallery__item--wide { grid-column: span 2; }
+  .fac__grid { grid-template-columns: 1fr; }
+  /* Stack Tipe Unit rows; carousel always on top, info below, left-aligned. */
+  .tipe__row, .tipe__row--rev { grid-template-columns: 1fr; }
+  .tipe__row .carousel { order: -1; min-height: 0; margin-top: 0; }
+  .tipe__row .carousel__slide { min-height: 0; aspect-ratio: 16 / 10; }
+  .tipe__row--rev .tipe__info { text-align: left; }
+  .tipe__row--rev .tipe__pills { justify-content: flex-start; }
   .location { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
